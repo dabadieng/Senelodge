@@ -36,19 +36,6 @@ class AdController extends AbstractController
     {
 
         $ad = new Ad();
-        $image = new Image();
-
-        $image->setUrl("http://placehold.it")
-            ->setCaption("ma 1er image");
-        $image2 = new Image();
-
-        $image2->setUrl("http://placehold.it")
-            ->setCaption("ma 1er image");
-
-        $ad->addImage($image)
-            ->addImage($image2);
-
-
 
 
         $form = $this->createForm(AdType::class, $ad);
