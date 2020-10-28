@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
  * @ORM\HasLifecycleCallbacks
@@ -23,6 +25,12 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\Length(
+     *      min = 10,
+     *      max = 255,
+     *      minMessage = "Le titre doit faire plus de 10 caractères",
+     *      maxMessage = "Le titre doit faire moins de 255 caractères"
+     * )
      */
     private $title;
 
@@ -38,16 +46,25 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      min = 20,
+     *      minMessage = "Votre introduction doit contenir au minimun 20 caractères"
+     * )
      */
     private $introduction;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      min = 100,
+     *      minMessage = "Votre description doit contenir au minimun 100 caractères"
+     * )
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $coverImage;
 
@@ -67,7 +84,7 @@ class Ad
     }
 
     /**
-     * perrmet d'initialiser un slug 
+     * perrmet d'initialiser un slug
      * @ORM\PrePersist
      * ORM\PreUpdate
      *

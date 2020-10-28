@@ -29,7 +29,7 @@ class AdController extends AbstractController
     /**
      * permet de créer une annonce
      *@Route("/ads/new", name="ads_create")
-     * 
+     *
      * @return Response
      */
     public function create(Request $request, EntityManagerInterface $manager)
@@ -40,9 +40,9 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach($ad->getImages() as $image) {
-                $image->setAd($ad); 
-                $manager->persist($image); 
+            foreach ($ad->getImages() as $image) {
+                $image->setAd($ad);
+                $manager->persist($image);
             }
             $this->addFlash(
                 'success',
@@ -52,27 +52,24 @@ class AdController extends AbstractController
             $manager->persist($ad);
             $manager->flush();
 
-            return $this->redirectToRoute("ads_show", [
-                "slug" => $ad->getSlug()
+            return $this->redirectToRoute('ads_show', [
+                'slug' => $ad->getSlug(),
             ]);
         }
 
-        return $this->render("ad/new.html.twig", [
-            "form" => $form->createView()
+        return $this->render('ad/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
-
-
     /**
-     * permet de retourner le détail d'une annonce 
+     * permet de retourner le détail d'une annonce
      *@Route("/ads/{slug}", name="ads_show")
      * @return Response
      */
     public function show(Ad $ad)
     {
-
-        return $this->render("ad/show.html.twig", [
+        return $this->render('ad/show.html.twig', [
             'ad' => $ad,
         ]);
     }
