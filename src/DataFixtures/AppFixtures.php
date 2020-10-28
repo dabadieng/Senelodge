@@ -19,7 +19,8 @@ class AppFixtures extends Fixture
             $ad = new Ad();
 
             $title = $faker->sentence();
-            $coverImage = $faker->imageURL();
+            //$coverImage = $faker->imageURL();
+            $coverImage = "http://placehold.it/1000x300";
             $introduction = $faker->paragraph(2);
             $content = $faker->paragraph(5);
 
@@ -33,7 +34,7 @@ class AppFixtures extends Fixture
 
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
                 $image = new Image();
-                $image->setUrl($faker->imageUrl())
+                $image->setUrl("http://placehold.it/1000x300")
                     ->setCaption($faker->sentence())
                     ->setAd($ad);
                     $manager->persist($image); 

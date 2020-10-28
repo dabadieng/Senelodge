@@ -22,32 +22,84 @@ class AdType extends AbstractType
      *
      * @param [string] $label
      * @param [string] $placeholder
-     * @return array 
+     * @param array $options
+     * @return array
      */
-    private function getConfiguration($label, $placeholder)
+    private function getConfiguration($label, $placeholder, $options = [])
     {
-        return [
-            "label" => $label,
-            "attr" => [
-                "placeholder" => $placeholder
-            ]
-        ];
+        return array_merge(
+            [
+                'label' => $label,
+                'attr' => [
+                    'placeholder' => $placeholder,
+                ],
+            ],
+            $options
+        );
     }
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, $this->getConfiguration("Titre", "Entrer un super titre"))
-            ->add('slug', TextType::class, $this->getConfiguration("Adresse web", "Entrer votre adresse web (automatique)"))
-            ->add('coverImage', UrlType::class, $this->getConfiguration("Entrer une URL", "Adresse URL de l'image "))
-            ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Entrer une description globale de votre bien"))
-            ->add('content', TextareaType::class, $this->getConfiguration("Description détaillée", "Entrer une description detaillée"))
-            ->add('rooms', IntegerType::class, $this->getConfiguration("Nombre de chambres", "Entrer le nombre de chambres"))
-            ->add('price', MoneyType::class, $this->getConfiguration("Prix par Nuit", "Entrer le prix que vous souhaitez par nuit"))
-            ->add("images", CollectionType::class, [
-                "entry_type" => ImageType::class,
-                "allow_add" => true
+            ->add(
+                'title',
+                TextType::class,
+                $this->getConfiguration('Titre', 'Entrer un super titre')
+            )
+            ->add(
+                'slug',
+                TextType::class,
+                $this->getConfiguration(
+                    'Adresse web',
+                    'Entrer votre adresse web (automatique)',
+                    [
+                        'required' => false,
+                    ]
+                )
+            )
+            ->add(
+                'coverImage',
+                UrlType::class,
+                $this->getConfiguration(
+                    'Entrer une URL',
+                    "Adresse URL de l'image "
+                )
+            )
+            ->add(
+                'introduction',
+                TextType::class,
+                $this->getConfiguration(
+                    'Introduction',
+                    'Entrer une description globale de votre bien'
+                )
+            )
+            ->add(
+                'content',
+                TextareaType::class,
+                $this->getConfiguration(
+                    'Description détaillée',
+                    'Entrer une description detaillée'
+                )
+            )
+            ->add(
+                'rooms',
+                IntegerType::class,
+                $this->getConfiguration(
+                    'Nombre de chambres',
+                    'Entrer le nombre de chambres'
+                )
+            )
+            ->add(
+                'price',
+                MoneyType::class,
+                $this->getConfiguration(
+                    'Prix par Nuit',
+                    'Entrer le prix que vous souhaitez par nuit'
+                )
+            )
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
             ]);
     }
 
