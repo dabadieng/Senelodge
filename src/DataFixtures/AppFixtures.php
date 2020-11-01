@@ -25,10 +25,11 @@ class AppFixtures extends Fixture
         $genres = ['male', 'female'];
         //Gestion des utilisateurs
         for ($i = 1; $i <= 10; $i++) {
+
             $genre = $faker->randomElement($genres);
 
             $picture = 'https://randomuser.me/api/portraits/';
-            $pictureId = $faker->numberBetween(1, 99);
+            $pictureId = $faker->numberBetween(1, 99) . '.png';
 
             $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
@@ -40,7 +41,7 @@ class AppFixtures extends Fixture
                 ->setFirstName($faker->firstName($genre))
                 ->setIntroduction($faker->sentence())
                 ->setEmail($faker->email)
-                ->setDescription($faker->paragraph(3))
+                ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
                 ->setHash($hash)
                 ->setPicture($picture);
 
