@@ -49,6 +49,9 @@ class AdController extends AbstractController
                 "l'annonce <strong>{$ad->getTitle()}</strong> a bien été enregistré"
             );
 
+            //affectation de l'annonce à l'utilisateur connecté
+            $ad->setAuthor($this->getUser());
+
             $manager->persist($ad);
             $manager->flush();
 
