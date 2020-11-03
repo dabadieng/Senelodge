@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Persistence\ObjectManager;
@@ -21,19 +22,37 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR-fr');
+        $adminRole = new Role();
+        $adminRole->setTitle("ROLE_ADMIN");
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser
+            ->setLastName("DIENG")
+            ->setFirstName("Daba")
+            ->setIntroduction($faker->sentence())
+            ->setEmail("daba@symfony.com")
+            ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
+            ->setHash($this->encoder->encodePassword($adminUser, "123456"))
+            ->setPicture("https://randomuser.me/api/portraits/women/85.jpg")
+            ->addUserRole($adminRole);
+        $manager->persist($adminUser);
+
         $users = [];
         $genres = ['male', 'female'];
+
         //Gestion des utilisateurs
         for ($i = 1; $i <= 10; $i++) {
 
             $genre = $faker->randomElement($genres);
 
             $picture = 'https://randomuser.me/api/portraits/';
-            $pictureId = $faker->numberBetween(1, 99) . '.png';
+            $pictureId = $faker->numberBetween(1, 99) . '.jpg';
 
             $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
             $user = new User();
+            //le 1er paramètre correspond à l'entité déclarée dans le security.yml
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user
@@ -56,7 +75,7 @@ class AppFixtures extends Fixture
 
             $title = $faker->sentence();
             //$coverImage = $faker->imageURL();
-            $coverImage = 'http://placehold.it/1000x300';
+            $coverImage = $faker->imageUrl();
             $introduction = $faker->paragraph(2);
             $content = $faker->paragraph(5);
 
@@ -72,7 +91,7 @@ class AppFixtures extends Fixture
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
                 $image = new Image();
                 $image
-                    ->setUrl('http://placehold.it/1000x300')
+                    ->setUrl($faker->imageUrl())
                     ->setCaption($faker->sentence())
                     ->setAd($ad);
                 $manager->persist($image);
