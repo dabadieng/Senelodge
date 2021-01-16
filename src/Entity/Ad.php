@@ -69,8 +69,8 @@ class Ad
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Url()
+     * @ORM\Column(type="text")
+     * ORM\Column(type="string", length=255, nullable=true)
      */
     private $coverImage;
 
@@ -80,7 +80,7 @@ class Ad
     private $rooms;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true, cascade={"persist"})
      * @Assert\Valid()
      */
     private $images;
@@ -121,6 +121,13 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->Slugify($this->title);
         }
+
+        //Initialise la coverImage avec la 1ere image de l'entity image
+        /*
+        if(empty($this->coverImage)) {
+            $this->coverImage = $this->images->get(0)->getUrl(); 
+        }
+        */
     }
 
     public function getId(): ?int
@@ -137,7 +144,7 @@ class Ad
         $sum = array_reduce($this->comments->toArray(), function ($total, $comment) {
             return $total + $comment->getRating();
         }, 0); //en mettant 0 cela initialise par défaut le total à 0
-        
+
         //Faire la division pour avoir la moyenne 
         if (count($this->comments) > 0) return $sum / count($this->comments);
 
@@ -240,11 +247,22 @@ class Ad
 
     public function getCoverImage(): ?string
     {
+
+        if (count($this->images) > 0) {
+            $cov = array_reduce($this->images->toArray(), function ($c, $image) {
+                if ($c == 0) {
+                    $this->coverImage = $image->getUrl();
+                    return $this->coverImage;
+                }
+            }, 0); //en mettant 0 cela initialise par défaut le total à 0
+
+        }
         return $this->coverImage;
     }
 
     public function setCoverImage(string $coverImage): self
     {
+
         $this->coverImage = $coverImage;
 
         return $this;

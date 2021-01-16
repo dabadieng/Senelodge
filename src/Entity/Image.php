@@ -21,12 +21,11 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Url()
      */
     private $url;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      * @Assert\Length(
      *      min = 10,
      *      minMessage = "Votre titre doit contenir au minimun 10 caractères"

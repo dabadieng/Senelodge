@@ -1,29 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Édition d'une annonce
+	Édition d'une annonce
 {% endblock %}
 
-{% form_theme form 'ad/_collection.html.twig' %}
+{# form_theme form 'ad/_collection.html.twig' #}
 
 {% block body %}
-  <div class="container">
-    <h1>
-      Modifier l'annonce {{ ad.title }}
-    </h1>
+	<div class="container">
+		<h1>
+			Modifier l'annonce
+			{{ ad.title }}
+		</h1>
 
-    {{ form_start(form) }}
+		{{ form_start(form) }}
 
-    {{ form_widget(form) }}
+		{{ form_widget(form) }}
 
-    <button type="submit" class="btn btn-primary">
-      Enregistrement des modifications
-    </button>
+		{# Vérifier si on n'est sur la route des ads_edit #}
+		{% if app.request.attributes.get("_route") == "ads_edit" %}
+			<h2>
+				Images
+			</h2>
+			{% for image in ad.images %}
+				<div>
+					<img src="{{asset("/upload/image/"~ image.url)}}" alt="{{image.url}}" width="250">
+					<a href="{{path("ad_delete_image", {"id":image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">
+						Supprimer
+					</a>
+				</div>
 
-    {{ form_end(form) }}
-  </div>
+			{% endfor %}
+		{% endif %}
+
+
+		<button type="submit" class="btn btn-primary">
+			Enregistrement des modifications
+		</button>
+
+		{{ form_end(form) }}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-  <script src="/js/ad.js"></script>
+	<script src="{{asset("img/images.js")}}"></script>
+	<script src="/js/ad.js"></script>
+
 {% endblock %}

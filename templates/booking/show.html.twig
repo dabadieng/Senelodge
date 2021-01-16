@@ -122,7 +122,7 @@
 							{{ad.title}}
 						</a>
 					</h4>
-					<img src="{{ad.coverImage}}" alt="Image de {{ad.title}}" class="img-fluid">
+					<img src="{{asset("/upload/image/"~ ad.coverImage)}}" alt="Image de {{ad.title}}" class="img-fluid">
 					{{ad.content | raw}}
 					<br>
 					<a href="{{path('ads_show', {'slug':ad.slug})}}" class="btn btn-primary">

@@ -77,13 +77,13 @@ class AppFixtures extends Fixture
 
             $title = $faker->sentence();
             //$coverImage = $faker->imageURL();
-            $coverImage = $faker->imageUrl();
+            $coverImage = mt_rand(1, 25) . ".png";
             $introduction = $faker->paragraph(2);
             $content = $faker->paragraph(5);
 
             $ad
                 ->setTitle($title)
-                ->setCoverImage($coverImage)
+                //->setCoverImage($coverImage)
                 ->setIntroduction($introduction)
                 ->setContent($content)
                 ->setPrice(mt_rand(80, 200))
@@ -94,7 +94,7 @@ class AppFixtures extends Fixture
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
                 $image = new Image();
                 $image
-                    ->setUrl($faker->imageUrl())
+                    ->setUrl(mt_rand(1, 25) . ".png")
                     ->setCaption($faker->sentence())
                     ->setAd($ad);
                 $manager->persist($image);

@@ -13,7 +13,9 @@
 		</div>
 
 		<a href="{{ url }}">
-			<img src="{{ ad.coverImage }}" alt="Image de l'appartement" style="height: 200px; width: 100%; display: block">
+			
+			<img src="{{asset("/upload/image/"~ ad.coverImage)}}" alt="Image de l'appartement" style="height: 200px; width: 100%; display: block">
+			
 		</a>
 
 		<div class="card-body">

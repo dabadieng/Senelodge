@@ -6,7 +6,7 @@
 
 {% block body %}
 
-	<div class="ad-title" style="background-image : url({{ad.coverImage}})">
+	<div class="ad-title" style="background-image : url({{asset("/upload/image/"~ ad.coverImage)}})">
 		<div class="container">
 			<h1>
 				{{ad.title}}
@@ -52,10 +52,11 @@
 							<li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index0}}" {% if loop.first %} class="active" {% endif %}></li>
 						{% endfor %}
 					</ol>
+
 					<div class="carousel-inner">
 						{% for image in ad.images %}
 							<div class="carousel-item {% if loop.first %}active{% endif %}">
-								<img src="{{image.url}}" class="d-block w-100" alt="...">
+								<img src="{{asset("/upload/image/"~ image.url)}}" class="d-block w-100" alt="...">
 								<div class="carousel-caption d-none d-md-block">
 									<h5>
 										{{ad.title}}
@@ -67,6 +68,7 @@
 							</div>
 						{% endfor %}
 					</div>
+
 					<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 						<span class="sr-only">
@@ -81,9 +83,10 @@
 					</a>
 				</div>
 				<hr>
+
 				{% if ad.comments |length > 0 %}
 					<h3 class="mb-3">
-						Commentaires de nos voyageurs : 
+						Commentaires de nos voyageurs :
 					</h3>
 					<div class="alert alert-info">
 						<h4 class="alert-heading">
@@ -128,6 +131,7 @@
 						Cette annonce n'a pas encore reçu de commentaires
 					</h2>
 				{% endif %}
+
 			</div>
 			<div class="col">
 				{% set a = ad.author %}
@@ -137,6 +141,7 @@
 							<img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
 						</a>
 					</div>
+
 					<div class="col">
 						<a href="{{path('user_show', {'slug':a.slug})}}">
 							<h3>
@@ -146,15 +151,17 @@
 						<span class="badge badge-primary">
 							<a href="{{path('user_show', {'slug':a.slug})}}">
 								<span>
-									{{a.ads | length }}
+									{#		{{a.ads | length }} #}
 									annonces
 								</span>
 							</a>
 						</span>
+
 					</div>
 				</div>
 				{{a.description | raw }}
 			</div>
+
 		</div>
 	</div>
 

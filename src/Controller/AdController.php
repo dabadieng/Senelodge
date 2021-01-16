@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdController extends AbstractController
 {
@@ -44,9 +45,26 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($ad->getImages() as $image) {
-                $image->setAd($ad);
-                $manager->persist($image);
+            //On récupère les images transmises
+            $images = $form->get("images")->getData();
+
+            //On boucle sur les images 
+            foreach ($images as $image) {
+                //On génère un nouveau nom de fichier 
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                //On copie le fichier dans le dossier upload 
+                $image->move(
+                    //Lieu de stockage défini dans service.yml 
+                    $this->getParameter("image_directory"),
+                    //nom du fichier à déplacer dans le dossier 
+                    $fichier
+                );
+
+                //On stocke l'image dans la db (son nom)
+                $img = new Image();
+                $img->setUrl($fichier);
+                $ad->addImage($img);
             }
             $this->addFlash(
                 'success',
@@ -56,8 +74,10 @@ class AdController extends AbstractController
             //affectation de l'annonce à l'utilisateur connecté
             $ad->setAuthor($this->getUser());
 
+            //On ne fait pas persister l'entity img car elle est reliée par la mention cascade dans l'entity ad 
             $manager->persist($ad);
             $manager->flush();
+
 
             return $this->redirectToRoute('ads_show', [
                 'slug' => $ad->getSlug(),
@@ -74,7 +94,7 @@ class AdController extends AbstractController
      *@Security("is_granted('ROLE_USER') and user === ad.getAuthor()", 
      *message="Cette annonce ne vous appartient pas. Vous ne pouvez pas l'éditer")
      *
-     * @return Response
+     * @return Response 
      */
     public function edit(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
@@ -82,9 +102,26 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($ad->getImages() as $image) {
-                $image->setAd($ad);
-                $manager->persist($image);
+            //On récupère les images transmises
+            $images = $form->get("images")->getData();
+
+            //On boucle sur les images 
+            foreach ($images as $image) {
+                //On génère un nouveau nom de fichier 
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                //On copie le fichier dans le dossier upload 
+                $image->move(
+                    //Lieu de stockage défini dans service.yml 
+                    $this->getParameter("image_directory"),
+                    //nom du fichier à déplacer dans le dossier 
+                    $fichier
+                );
+
+                //On stocke l'image dans la db (son nom)
+                $img = new Image();
+                $img->setUrl($fichier);
+                $ad->addImage($img);
             }
             $this->addFlash(
                 'success',
@@ -136,5 +173,36 @@ class AdController extends AbstractController
         );
 
         return $this->redirectToRoute("ad_index");
+    }
+
+    /**
+     * Perme de supprimer une image à l'aide de son id
+     * Cette route est uniquement accessible à l'aide de la méthode DELETE
+     * @Route("/ads/supprimer/image/{id}", name="ad_delete_image" , methods={"DELETE"})
+     */
+    public function deleteImage(Image $image, Request $request)
+    {
+        //Récupère les données envoyés en ajax et les décode mettre true pour permettre l'assoc
+        //mettre le 2ème parametre à true pour avoir le nom des colonnes 
+        $data = json_decode($request->getContent(), true);
+
+        //On vérifie si le token et valide avec le nom DELETE et ID 
+        if ($this->isCsrfTokenValid("delete". $image->getId(), $data["_token"])) {
+            //On récupère le nom du fichier 
+            $nom = $image->getUrl();
+            //Va dans le dossier pour supprimer l'image 
+            unlink($this->getParameter("image_directory") . "/" . $nom);
+
+            //On supprime de la base 
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            //On répond en json avec le parametre 1 pour success
+            return new JsonResponse(["success" => 1]);
+        } else {
+            //si le token n'est pas valide 
+            return new JsonResponse(["error" => "Token invalide"], 400);
+        }
     }
 }
