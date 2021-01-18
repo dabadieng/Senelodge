@@ -15,7 +15,7 @@
 		{% for booking in app.user.bookings %}
 			<div class="row mt-5">
 				<div class="col-4">
-					<img class="img-fluid" src="{{ booking.ad.coverImage }}" alt="Photo de l'annonce {{booking.ad.title}}">
+					<img class="img-fluid" src="{{asset("/upload/image/"~ booking.ad.coverImage) }}" alt="Photo de l'annonce {{booking.ad.title}}">
 				</div>
 				<div class="col-8">
 					<h4>

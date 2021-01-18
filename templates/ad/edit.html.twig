@@ -24,12 +24,11 @@
 			</h2>
 			{% for image in ad.images %}
 				<div>
-					<img src="{{asset("/upload/image/"~ image.url)}}" alt="{{image.url}}" width="250">
-					<a href="{{path("ad_delete_image", {"id":image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">
+					<img src="{{ asset('/upload/image/' ~ image.url) }}" alt="Image" width="150">
+					<a href="{{ path('ad_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">
 						Supprimer
 					</a>
 				</div>
-
 			{% endfor %}
 		{% endif %}
 
@@ -45,5 +44,4 @@
 {% block javascripts %}
 	<script src="{{asset("img/images.js")}}"></script>
 	<script src="/js/ad.js"></script>
-
 {% endblock %}

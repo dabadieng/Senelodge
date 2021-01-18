@@ -175,34 +175,31 @@ class AdController extends AbstractController
         return $this->redirectToRoute("ad_index");
     }
 
+
+
     /**
-     * Perme de supprimer une image à l'aide de son id
-     * Cette route est uniquement accessible à l'aide de la méthode DELETE
-     * @Route("/ads/supprimer/image/{id}", name="ad_delete_image" , methods={"DELETE"})
+     * @Route("/ads/supprime/image/{id}", name="ad_delete_image", methods={"DELETE"})
      */
     public function deleteImage(Image $image, Request $request)
     {
-        //Récupère les données envoyés en ajax et les décode mettre true pour permettre l'assoc
-        //mettre le 2ème parametre à true pour avoir le nom des colonnes 
         $data = json_decode($request->getContent(), true);
 
-        //On vérifie si le token et valide avec le nom DELETE et ID 
-        if ($this->isCsrfTokenValid("delete". $image->getId(), $data["_token"])) {
-            //On récupère le nom du fichier 
+        // On vérifie si le token est valide
+        if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
+            // On récupère le nom de l'image
             $nom = $image->getUrl();
-            //Va dans le dossier pour supprimer l'image 
-            unlink($this->getParameter("image_directory") . "/" . $nom);
+            // On supprime le fichier
+            unlink($this->getParameter('image_directory') . '/' . $nom);
 
-            //On supprime de la base 
+            // On supprime l'entrée de la base
             $em = $this->getDoctrine()->getManager();
             $em->remove($image);
             $em->flush();
 
-            //On répond en json avec le parametre 1 pour success
-            return new JsonResponse(["success" => 1]);
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
         } else {
-            //si le token n'est pas valide 
-            return new JsonResponse(["error" => "Token invalide"], 400);
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
         }
     }
 }
