@@ -112,15 +112,14 @@
 					{% for comment in ad.comments %}
 						<div class="bg-light rounded mb-3 py-3 px-3">
 							<strong>
-								{{comment.author.fullName}}
+								{{comment.author.firstName}}
 							</strong>
 							a dit :
 							<blockquote>
 								{{comment.content}}
 							</blockquote>
 							<strong>
-								Note donnée par
-								{{comment.author.fullName }}
+								Note donnée 
 							</strong>
 							{% include "partials/rating.html.twig" with {"rating":comment.rating} %}
 						</div>

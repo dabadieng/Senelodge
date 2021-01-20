@@ -15,7 +15,8 @@ class ApplicationType extends AbstractType
      */
     protected function getConfiguration($label, $placeholder, $options = [])
     {
-        return array_merge(
+        //_recursive pour permettre l'ajout d'un tableau attr 
+        return array_merge_recursive(
             [
                 'label' => $label,
                 'attr' => [

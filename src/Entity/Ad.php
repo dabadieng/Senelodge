@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -143,7 +144,7 @@ class Ad
         */
         $sum = array_reduce($this->comments->toArray(), function ($total, $comment) {
             return $total + $comment->getRating();
-        }, 0); //en mettant 0 cela initialise par défaut le total à 0
+        }, 0); //en mettant 0 cela initialise le total à 0
 
         //Faire la division pour avoir la moyenne 
         if (count($this->comments) > 0) return $sum / count($this->comments);
@@ -383,5 +384,19 @@ class Ad
         }
 
         return $this;
+    }
+
+    /**
+     * Permet de récupérer le commentaire d'un auteur par rapport à une annonce 
+     *
+     * @param User $author
+     * @return Comment|null
+     */
+    public function getCommentFromAuthor(User $author)
+    {
+        foreach ($this->comments as $comment) {
+            if ($comment->getAuthor() == $author) return $comment;
+        }
+        return null;
     }
 }

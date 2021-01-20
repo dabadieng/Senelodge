@@ -81,7 +81,7 @@
 							Commentaire
 						</dt>
 						<dd class="col-md-8">
-							{{booking.comment}}
+							{{booking.comment | default("Aucun commentaire")}}
 						</dd>
 					</dl>
 					<br>
@@ -109,7 +109,37 @@
 						Plus d'info sur
 						{{author.firstname}}
 					</a>
+				</div>
+				<div class="alert alert-light" id="comment">
+					<h2 class="alert-heading">
+						Votre avis compte !
+					</h2>
+					{% if date() > date(booking.endDate) %}
 
+						{% set comment = booking.ad.commentFromAuthor(app.user) %}
+
+						{% if comment is not null %}
+							<blockquote>
+								{{comment.content}}
+							</blockquote>
+							<strong>
+								Note :
+								{% include "partials/rating.html.twig" with {"rating":comment.rating} %}
+							</strong>
+						{% else %}
+							{{form_start(form)}}
+							{{form_widget(form)}}
+							<button type="submit" class="btn btn-success">
+								Soumettre
+							</button>
+							{{form_end(form)}}
+						{% endif %}
+
+					{% else %}
+						<p>
+							Vous ne pouvez pas noté cette cette annonce tant que votre séjour n'est pas terminé
+						</p>
+					{% endif %}
 				</div>
 			</div>
 			<div class="col">
