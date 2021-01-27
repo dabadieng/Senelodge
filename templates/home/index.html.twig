@@ -1,18 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Bienvenue chez SénéLodge {% endblock %}
+{% block title %}
+	Bienvenue chez SénéLodge
+{% endblock %}
 
 {% block body %}
 
 	<div class="jumbotron">
-		<h1 class="display-3">Bienvenue sur SénéLodge</h1>
-		<p class="lead">Dans ce site vous allez trouver votre bonheur
+		<h1 class="display-3">
+			Bienvenue sur SénéLodge
+		</h1>
+		<p class="lead">
+			Dans ce site vous allez trouver votre bonheur
 		</p>
 		<hr class="my-4">
-		<p>Faite vite</p>
-		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="{{path('ad_index')}}" role="button">Voir nos Annonces</a>
+		<p>
+			Faite vite
 		</p>
+		<p class="lead">
+			<a class="btn btn-primary btn-lg" href="{{path('ad_index')}}" role="button">
+				Voir nos Annonces
+			</a>
+		</p>
+	</div>
+	<div>
+		<a href="{{path('email_registration_succes')}}">
+			Envoyer email
+		</a>
 	</div>
 
 </div>{% endblock %}

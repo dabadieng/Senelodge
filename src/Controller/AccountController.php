@@ -72,7 +72,8 @@ class AccountController extends AbstractController
                 'Votre compte à bien été créé ! Vous pouvez maintenant vous connecteee!'
             );
 
-            return $this->redirectToRoute('account_login');
+            //Sending email and login
+            return $this->redirectToRoute('email_registration_succes', ['ta' => $user->getEmail(), 'un' => $user->getFirstName()]);
         }
 
         return $this->render('account/registration.html.twig', [

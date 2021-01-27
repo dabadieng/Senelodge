@@ -76,14 +76,14 @@ class AppFixtures extends Fixture
             $user = $users[mt_rand(0, count($users) - 1)];
 
             $title = $faker->sentence();
-            //$coverImage = $faker->imageURL();
+            $coverImage = $faker->imageURL();
             $coverImage = mt_rand(1, 25) . ".png";
             $introduction = $faker->paragraph(2);
             $content = $faker->paragraph(5);
 
             $ad
                 ->setTitle($title)
-                //->setCoverImage($coverImage)
+                ->setCoverImage($coverImage)
                 ->setIntroduction($introduction)
                 ->setContent($content)
                 ->setPrice(mt_rand(80, 200))

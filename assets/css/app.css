@@ -9,6 +9,20 @@ div.ad-title {
     background-position: center center;
 }
 
+div.ad-title .btn {
+    margin-top: 2em;
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
+
+.alert a {
+    text-decoration: none;
+}
+
+.alert .btn {
+    color: white;
+}
+
 h1,
 p {
     color: white;
