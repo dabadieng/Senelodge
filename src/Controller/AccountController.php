@@ -61,6 +61,21 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get("picture")->getData();
+
+            //On génère un nouveau nom de fichier 
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+            //On copie le fichier dans le dossier upload 
+            $image->move(
+                //Lieu de stockage défini dans service.yml 
+                $this->getParameter("image_directory"),
+                //nom du fichier à déplacer dans le dossier 
+                $fichier
+            );
+
+            $user->setPicture($fichier); 
+
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
 
@@ -82,7 +97,7 @@ class AccountController extends AbstractController
     }
 
     /**
-     * Permet d'aéfficher et de traiter le formulaire de profil
+     * Permet d'afficher et de traiter le formulaire de profil
      * @Route("/account/profile", name="account_profile")
      * @IsGranted("ROLE_USER")
      *

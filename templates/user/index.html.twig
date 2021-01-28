@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col--3 text-center">
-				<img src="{{user.picture}}" class="avatar mb-3" alt="Avatar de {{user.fullName}}">
+				<img src="{{asset("/upload/image/"~ user.picture)}}" class="avatar mb-3" alt="Avatar de {{user.fullName}}">
 				<br>
 				<span class="badge badge-primary">
 					{{user.ads | length }}

@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -33,6 +34,7 @@ class RegistrationType extends ApplicationType
                 EmailType::class,
                 $this->getConfiguration('Email', 'Votre Email')
             )
+            /*
             ->add(
                 'picture',
                 UrlType::class,
@@ -41,6 +43,40 @@ class RegistrationType extends ApplicationType
                     "Entrer l'URL de votre photo profil"
                 )
             )
+            */
+            ->add('picture', FileType::class, [
+                'label' => "Photo profil",
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // Add multiple
+                'multiple' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                /*
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            "image/png",
+                            "image/jpeg",
+                            "image/jpg",
+                            "image/gif",
+                            "image/x-citrix-jpeg",
+                            "image/x-citrix-png",
+                            "image/x-png",
+                        ],
+                        'mimeTypesMessage' => "Ce type de fichier n'est pas autorisé",
+                    ])
+                    
+                ],*/
+            ])
             ->add(
                 'hash',
                 PasswordType::class,

@@ -34,7 +34,7 @@
 	{% endif %}
 
 	<div class="container">
-		<h1>
+		<h1 class="my-5">
 			Réservation N°
 			{{booking.id}}
 		</h1>
@@ -74,7 +74,7 @@
 							Montant total
 						</dt>
 						<dd class="col-md-8">
-							{{booking.amount}}
+							{{booking.amount | number_format(2, ',', ' ')}}
 							&euro;
 						</dd>
 						<dt class="col-md-4">
