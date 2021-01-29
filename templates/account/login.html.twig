@@ -41,11 +41,14 @@
 							<button type="submit" class="btn btn-success">
 								Connexion !
 							</button>
-							<a href="#" class="btn btn-link">
+							<a href="{{path('account_register')}}" class="btn btn-link">
 								Je n'ai pas encore de compte !
 							</a>
 						</div>
 					</form>
+					<a href="{{path('app_forgot_password_request')}}">
+						Mot de passe oublié
+					</a>
 				</div>
 			</div>
 		</div>
