@@ -15,12 +15,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminAdController extends AbstractController
 {
     /**
-     * @Route("/admin/ads", name="admin_ads_index")
+     * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      */
-    public function index(AdRepository $repos)
+    public function index(AdRepository $repos, $page)
     {
+        $limit = 10;
+
+        /** Détermination de l'Offset  
+         * page 1 = 1 * 10 = 10 - 10 = 0
+         * page 2 = 2 * 10 = 20 - 10 = 10 
+         */
+        $start = $page * $limit - $limit;
+
+        //Nombre d'enregistrements pour déterminer le nbre de pages 
+        $total = count($repos->findAll());
+        //Calculer le nombre de page 
+        $pages = ceil($total / $limit);
+
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repos->findAll(),
+            'ads' => $repos->findBy([], [], $limit, $start),
+            "pages" => $pages,
+            "page" => $page
         ]);
     }
 
