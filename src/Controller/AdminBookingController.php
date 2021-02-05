@@ -37,10 +37,12 @@ class AdminBookingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //la valeur 0 est considérée empty donc on appel la méthode prepersiste 
+            $booking->setAmount(0); 
 
             $this->addFlash(
                 'success',
-                "la réservation concernent l'annonce <strong>{$booking->getAd()->getTitle()}</strong> a bien été modifée"
+                "la réservation N° <strong>{$booking->getId()}</strong> a bien été modifée"
             );
 
             $manager->persist($booking);
