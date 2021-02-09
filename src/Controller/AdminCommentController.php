@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Form\AdminCommentType;
 use App\Repository\CommentRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,19 +15,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminCommentController extends AbstractController
 {
     /**
-     * @Route("/admin/comments", name="admin_comments_index")
+     * @Route("/admin/comments/{page<\d+>?1}", name="admin_comments_index")
      */
-    public function index(CommentRepository $repos)
+    public function index(PaginationService $pagination, CommentRepository $repos, $page)
     {
+        $pagination->setEntityClass(Comment::class)
+            ->setLimit(5)
+            ->setPage($page);
 
         return $this->render('admin/comment/index.html.twig', [
-            "comments" => $repos->findAll()
+            "pagination" => $pagination,
         ]);
     }
 
     /**
      * Permet d'éditer un commentaire  
-     * @Route("/admin/comments/{id}/edit", name="admin_comments_edit")
+     * @Route("/admin/comments/{id}/edit", name="admin_comment_edit")
      *
      * @param Comment $comment
      * @param Request $request
@@ -60,7 +64,7 @@ class AdminCommentController extends AbstractController
 
     /**
      * Permet de supprimer un commentaire 
-     * @Route("/admin/comments/{id}/delete", name="admin_comments_delete")
+     * @Route("/admin/comments/{id}/delete", name="admin_comment_delete")
      *
      * @param Comment $comment
      * @param EntityManagerInterface $manager

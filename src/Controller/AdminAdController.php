@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Repository\AdRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,25 +18,13 @@ class AdminAdController extends AbstractController
     /**
      * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      */
-    public function index(AdRepository $repos, $page)
+    public function index(PaginationService $pagination, AdRepository $repos, $page)
     {
-        $limit = 10;
-
-        /** Détermination de l'Offset  
-         * page 1 = 1 * 10 = 10 - 10 = 0
-         * page 2 = 2 * 10 = 20 - 10 = 10 
-         */
-        $start = $page * $limit - $limit;
-
-        //Nombre d'enregistrements pour déterminer le nbre de pages 
-        $total = count($repos->findAll());
-        //Calculer le nombre de page 
-        $pages = ceil($total / $limit);
+        $pagination->setEntityClass(Ad::class)
+            ->setPage($page);
 
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repos->findBy([], [], $limit, $start),
-            "pages" => $pages,
-            "page" => $page
+            "pagination" => $pagination
         ]);
     }
 

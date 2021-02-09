@@ -11,9 +11,10 @@
 		</h1>
 
 		<div class="row">
-			{% for ad in ads %}
+			{% for ad in pagination.data %}
 				{% include 'ad/_ad.html.twig' %}
 			{% endfor %}
 		</div>
 	</div>
+	{{ pagination.display() }}
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Repository\AdRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,14 +20,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AdController extends AbstractController
 {
     /**
-     * @Route("/ads", name="ad_index")
+     * @Route("/ads/{page<\d+>?1}", name="ad_index")
      */
-    public function index(AdRepository $repos)
+    public function index(PaginationService $pagination, AdRepository $repos, $page)
     {
-        $ads = $repos->findAll();
+        $pagination->setEntityClass(Ad::class)
+            ->setLimit(9)
+            ->setPage($page);
 
         return $this->render('ad/index.html.twig', [
-            'ads' => $ads,
+            "pagination" => $pagination
         ]);
     }
     /**

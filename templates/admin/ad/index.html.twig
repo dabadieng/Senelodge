@@ -9,7 +9,7 @@
 		<h1 class="my-5">
 			Gestion des annonces
 		</h1>
-		<table class="table-hover">
+		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th>
@@ -33,7 +33,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for ad in ads %}
+				{% for ad in pagination.data %}
 					<tr>
 						<td>
 							{{ad.id}}
@@ -68,26 +68,6 @@
 			</tbody>
 
 		</table>
-		<div class="d-flex justify-content-center">
-			<ul class="pagination">
-				<li class="page-item {% if page==1 %}disabled{% endif %} ">
-					<a class="page-link" href="{{path('admin_ads_index', {'page':page-1})}}">
-						&laquo;
-					</a>
-				</li>
-				{% for i in 1..pages %}
-					<li class="page-item {% if page == i %}active{% endif %} ">
-						<a class="page-link" href="{{path('admin_ads_index', {'page':i})}}">
-							{{i}}
-						</a>
-					</li>
-				{% endfor %}
-				<li class="page-item {% if page==pages %}disabled{% endif %}">
-					<a class="page-link" href="{{path('admin_ads_index', {'page':page+1})}}">
-						&raquo;
-					</a>
-				</li>
-			</ul>
-		</div>
+		{{ pagination.display() }}
 	</div>
 {% endblock %}

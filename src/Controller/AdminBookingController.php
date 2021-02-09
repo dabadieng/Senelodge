@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Form\AdminBookingType;
+use App\Service\PaginationService;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminBookingController extends AbstractController
 {
     /**
-     * @Route("/admin/bookings", name="admin_bookings_index")
+     * @Route("/admin/bookings/{page<\d+>?1}", name="admin_bookings_index")
      */
-    public function index(BookingRepository $repos)
+    public function index(PaginationService $pagination, BookingRepository $repos, $page)
     {
+        $pagination->setEntityClass(Booking::class)
+            ->setPage($page);
+
         return $this->render('admin/booking/index.html.twig', [
-            "bookings" => $repos->findAll()
+            "pagination" => $pagination,
         ]);
     }
 
@@ -38,7 +42,7 @@ class AdminBookingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //la valeur 0 est considérée empty donc on appel la méthode prepersiste 
-            $booking->setAmount(0); 
+            $booking->setAmount(0);
 
             $this->addFlash(
                 'success',

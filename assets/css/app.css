@@ -65,3 +65,11 @@ span.rating i {
 nav a {
     font-size: 1em;
 }
+
+.contenu {
+    height: 220px;
+}
+
+.colorContent {
+    background-color: lightBlue;
+}
