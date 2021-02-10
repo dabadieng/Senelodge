@@ -5,10 +5,75 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
+	<div class="container-fluid">
 		<h1 class="my-5">
-			Administration des utilisateurs
+			Gestion des utilisateurs
 		</h1>
-	</div>
+		<div>
+			Toggle column:
+			<a class="toggle-vis" data-column="0">
+				Id
+			</a>
+			-
+			<a class="toggle-vis" data-column="1">
+				Titre
+			</a>
+			-
+			<a class="toggle-vis" data-column="2">
+				Auteur
+			</a>
+			-
+			<a class="toggle-vis" data-column="3">
+				Réservations
+			</a>
+			-
+			<a class="toggle-vis" data-column="4">
+				Note
+			</a>
+		</div>
+		<table class="table table-hover" id="daba">
+			<thead>
+				<tr>
+					<th>
+						Id
+					</th>
+					<th>
+						Nom et Prénom
+					</th>
+					<th>
+						Introduction
+					</th>
+					<th>
+						Action
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in pagination.data %}
+					<tr>
+						<td>
+							{{user.id}}
+						</td>
+						<td>
+							<img src="{{user.picture}}" alt="avatar de {{user.fullName}}" class="avatar avatar-micro">
+							{{user.fullName}}
+						</td>
+						<td>
+							{{user.introduction}}
+						</td>
+						<td>
+							<a href="{{path('admin_users_edit', {'id':user.id})}}" class="btn btn-primary">
+								<i class="fas fa-edit"></i>
+							</a>
+							<a href="{{path('admin_users_delete', {'id':user.id})}}" class="btn btn-danger" onclick="return confirm(`Etes vous sur de vouloir supprimer l'annonce :  {{user.fullName}}`)">
+								<i class="fas fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
 
+		</table>
+		{{ pagination.display() }}
+	</div>
 {% endblock %}

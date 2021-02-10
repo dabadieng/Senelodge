@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+	Modifier l'utilisateur n°
+	{{user.id}}
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h1 class="my-5">
+			Modifier l'utilisateur {{user.fullName}}
+		</h1>
+
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col">
+				{{ form_row(form.firstName) }}
+				{{ form_row(form.lastName) }}
+				{{ form_row(form.email) }}
+			</div>
+			<div class="col">
+				{#{ form_row(form.userRoles) }#}
+				{{ form_row(form.introduction) }}
+				{{ form_row(form.description) }}
+				<button type="submit" class="btn btn-success">
+					<i class="fas fa-check"></i>
+					Enregistrer les modifications
+				</button>
+			</div>
+		</div>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
