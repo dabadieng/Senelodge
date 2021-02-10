@@ -9,7 +9,29 @@
 		<h1 class="my-5">
 			Gestion des annonces
 		</h1>
-		<table class="table table-hover">
+		<div>
+			Toggle column:
+			<a class="toggle-vis" data-column="0">
+				Id
+			</a>
+			-
+			<a class="toggle-vis" data-column="1">
+				Titre
+			</a>
+			-
+			<a class="toggle-vis" data-column="2">
+				Auteur
+			</a>
+			-
+			<a class="toggle-vis" data-column="3">
+				Réservations
+			</a>
+			-
+			<a class="toggle-vis" data-column="4">
+				Note
+			</a>
+		</div>
+		<table class="table table-hover" id="daba">
 			<thead>
 				<tr>
 					<th>
@@ -71,3 +93,9 @@
 		{{ pagination.display() }}
 	</div>
 {% endblock %}
+{% block javascripts %}
+	<script>
+		
+	</script>
+	{% include "_scripts/DataTables/jquery.dataTables.min.js" %}
+</script>{% endblock javascripts %}
