@@ -161,6 +161,32 @@ class PaginationService
     }
 
     /**
+     * Permet de récupérer les données paginées pour une entité spécifique
+     * 
+     * Elle se sert de Doctrine afin de récupérer le repository pour l'entité spécifiée
+     * puis grâce au repository et à sa fonction findBy() on récupère les données dans une 
+     * certaine limite et en partant d'un offset
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas définie
+     *
+     * @return array
+     */
+    public function getDataOrderBy($propriete = "", $type = "")
+    {
+        if (empty($this->entityClass)) {
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+        // 1) Calculer l'offset
+        $offset = $this->currentPage * $this->limit - $this->limit;
+
+        // 2) Demander au repository de trouver les éléments à partir d'un offset et 
+        // dans la limite d'éléments imposée (voir propriété $limit)
+        return $this->manager
+            ->getRepository($this->entityClass)
+            ->findBy([], ["$propriete" => "$type"], $this->limit, $offset);
+    }
+
+    /**
      * Permet de spécifier la page que l'on souhaite afficher
      *
      * @param int $page

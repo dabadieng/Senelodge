@@ -49,7 +49,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for user in pagination.data %}
+				{% for user in pagination.dataOrderBy("firstName", "ASC") %}
 					<tr>
 						<td>
 							{{user.id}}

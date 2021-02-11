@@ -30,6 +30,16 @@ Encore
     './assets/css/datapicker.min.css',
 ])
 
+.addEntry('js/app',
+    './assets/js/app.js',
+    './assets/js/datapicker.min.js')
+
+.addEntry('js/ad', './assets/js/ad.js')
+
+.addEntry('js/images', './assets/js/images.js')
+
+//.addStyleEntry('css/style', './assets/css/app.scss')
+
 
 /*
 .addEntry('js/app', [
@@ -66,8 +76,9 @@ Encore
     config.corejs = 3;
 })
 
-// enables Sass/SCSS support
-//.enableSassLoader()
+//enables Sass / SCSS support
+//> nom install sass-loader node-sass --only=dev
+.enableSassLoader()
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()

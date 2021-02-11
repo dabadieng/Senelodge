@@ -1,3 +1,11 @@
+.contenu {
+    height: 220px;
+}
+
+.colorContent {
+    background-color: lightBlue;
+}
+
 div.container,
 div.container-fluid {
     margin-top: 20px;
@@ -9,13 +17,13 @@ div.ad-title {
     background-position: center center;
 }
 
-h1,
-p {
+div.ad-title h1,
+div.ad-title p {
     color: white;
     text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
-.btn {
+div.ad-title .btn {
     margin-top: 2em;
     font-size: 1.5em;
     line-height: 1.5em;
@@ -49,27 +57,16 @@ div.carousel-caption {
 .datepicker table tr td.disabled,
 .datepicker table tr td.disabled:hover {
     color: firebrick !important;
-    background-color: black;
 }
 
 span.rating i {
     color: goldenrod;
 }
 
-.btn {
-    margin-top: 2em;
-    font-size: 1.5em;
-    line-height: 1.5em;
+.alert a {
+    text-decoration: none;
 }
 
-nav a {
-    font-size: 1em;
-}
-
-.contenu {
-    height: 220px;
-}
-
-.colorContent {
-    background-color: lightBlue;
+.alert .btn {
+    color: white;
 }

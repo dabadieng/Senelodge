@@ -17,7 +17,7 @@
 		{{ form_widget(form) }}
 
 		<div class="alert alert-success clearfix">
-			<h2 class="alert-heading">
+			<h2 class=" h6 alert-heading">
 				Sauvegarder mon annonce
 			</h2>
 			<p>
@@ -33,5 +33,7 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="/js/ad.js"></script>
+
+	<script src="{{ asset('build/js/ad.js') }}"></script>
+
 {% endblock %}

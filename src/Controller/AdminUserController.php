@@ -22,7 +22,7 @@ class AdminUserController extends AbstractController
             ->setPage($page);
 
         return $this->render('admin/user/index.html.twig', [
-            "pagination" => $paginationService
+            "pagination" => $paginationService,
         ]);
     }
 

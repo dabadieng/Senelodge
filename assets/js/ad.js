@@ -1,4 +1,4 @@
-$('#add-image').click(function(){
+$('#add-image').click(function() {
     // Je récupère le numéro des futurs champs que je vais créer
     const index = +$('#widgets-counter').val();
 
@@ -15,7 +15,7 @@ $('#add-image').click(function(){
 });
 
 function handleDeleteButtons() {
-    $('button[data-action="delete"]').click(function(){
+    $('button[data-action="delete"]').click(function() {
         const target = this.dataset.target;
         $(target).remove();
     });
