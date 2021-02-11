@@ -6,8 +6,8 @@
 
 {% block body %}
 
-	<div class="container">
-		<div class="jumbotron mt-3">
+	<div class="container ">
+		<div class="container-fluid alert alert-secondary mt-3">
 			<h1 class="display-3">
 				Bienvenue sur SénéLodge !
 			</h1>
@@ -42,7 +42,7 @@
 		<div class="row">
 			{% for data in users %}
 				<div class="col">
-					<div class="card border-secondary mb-3">
+					<div class="card border-secondary mb-3 alert alert-secondary">
 						<div class="card-body">
 							<h4 class="card-title">
 								{{data.user.fullName}}

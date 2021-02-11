@@ -41,7 +41,7 @@
 
 	</div>
 
-	<div class="container">
+	<div class="container alert alert-secondary">
 		<div class="row">
 			<div class="col-md-8 mb-3">
 				{{ad.content}}
@@ -110,12 +110,12 @@
 
 
 					{% for comment in ad.comments %}
-						<div class="bg-light rounded mb-3 py-3 px-3">
+						<div class="alert alert-info  rounded mb-3 py-3 px-3">
 							<strong>
 								{{comment.author.firstName}}
 							</strong>
 							a dit :
-							<blockquote>
+							<blockquote class= "text-white">
 								{{comment.content}}
 							</blockquote>
 							<strong>

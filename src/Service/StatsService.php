@@ -53,7 +53,7 @@ class StatsService
                 JOIN a.author u
                 GROUP BY a  
                 ORDER BY b.id " . $direction
-        )->setMaxResults(5)
+        )->setMaxResults(7)
             ->getResult();
     }
 
