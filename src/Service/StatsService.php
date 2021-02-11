@@ -33,6 +33,30 @@ class StatsService
         return $this->manager->createQuery("SELECT COUNT(c) FROM App\Entity\Comment c")->getSingleScalarResult();
     }
 
+    public function getLastAds($direction)
+    {
+        return  $this->manager->createQuery(
+            "SELECT a.title, a.id,a.slug, u.firstName, u.lastName, u.picture
+                FROM App\Entity\Ad a
+                JOIN a.author u
+                GROUP BY a  
+                ORDER BY a.id " . $direction
+        )->setMaxResults(5)
+            ->getResult();
+    }
+    public function getLastBookings($direction)
+    {
+        return  $this->manager->createQuery(
+            "SELECT  b as booking, a.title, u.firstName, u.lastName, u.picture
+                FROM App\Entity\Booking b
+                JOIN b.ad a
+                JOIN a.author u
+                GROUP BY a  
+                ORDER BY b.id " . $direction
+        )->setMaxResults(5)
+            ->getResult();
+    }
+
     public function getStats()
     {
         $users  = $this->getUsersCount();

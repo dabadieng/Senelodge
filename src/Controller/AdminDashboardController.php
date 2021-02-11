@@ -18,14 +18,17 @@ class AdminDashboardController extends AbstractController
 
         $bestAds = $statsService->getAdsStats('DESC');
         $worstAds = $statsService->getAdsStats("ASC");
+        $lastAds = $statsService->getLastAds("DESC");
+        $lastBookings = $statsService->getLastBookings("DESC");
 
-        dump($bestAds);
 
         return $this->render('admin/dashboard/index.html.twig', [
             // Compact permet d'associée la clé avec la variable de même nom 
             "stats" => $stats,
             "bestAds" => $bestAds,
-            "worstAds" => $worstAds
+            "worstAds" => $worstAds,
+            "lastAds" => $lastAds,
+            "lastBookings" => $lastBookings
         ]);
     }
 }

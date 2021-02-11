@@ -84,7 +84,7 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-				<div class="alert alert-success">
+				<div class="alert alert-success contenuDashboard">
 					<h2 class="alert-heading my-3">
 						<i class="fas fa-arrow-up"></i>
 						Les annonces populaires
@@ -103,9 +103,7 @@
 								</th>
 							</tr>
 						</thead>
-						<tbody>
-							{# ad n'est pas l'entité Ad mais l'objet retourner par la requete 
-																																																																																											nous pouvons nommé autrement #}
+						<tbody>												ent #}
 							{% for ad in bestAds %}
 								<tr>
 									<td>
@@ -128,7 +126,7 @@
 				</div>
 			</div>
 			<div class="col">
-				<div class="alert alert-danger">
+				<div class="alert alert-danger contenuDashboard">
 					<h2 class="alert-heading my-3">
 						<i class="fas fa-arrow-down"></i>
 						Les pires populaires
@@ -165,6 +163,131 @@
 										</span>
 									</td>
 								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="alert alert-info contenuDashboard">
+					<h2 class="alert-heading my-3">
+						<i class="fas fa-arrow-right"></i>
+						Les 5 dernières annonces publiées
+					</h2>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>
+									Id
+								</th>
+								<th>
+									Annonce
+								</th>
+								<th>
+									Propriétaire
+								</th>
+								<th>
+									Voir Admin
+								</th>
+								<th>
+									Voir Site
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for ad in lastAds %}
+								<tr>
+									<td>
+										{{ ad.id }}
+									</td>
+									<td>
+										{{ ad.title }}
+									</td>
+									<td>
+										{{ ad.lastName }}
+									</td>
+									<td>
+										<a href="{{path('admin_ads_edit', {'id':ad.id})}}">
+											<i class="fas fa-pen"></i>
+
+										</a>
+									</td>
+									<td>
+										<a href="{{path('ads_show', {'slug':ad.slug})}}">
+											<i class="fas fa-pen"></i>
+
+										</a>
+									</td>
+								</tr>
+
+
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+			<div class="col">
+				<div class="alert alert-warning contenuDashboard">
+					<h2 class="alert-heading my-3">
+						<i class="fas fa-arrow-left"></i>
+						Les 5 dernières réservations
+					</h2>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>
+									Id
+								</th>
+								<th>
+									Date de réservation
+								</th>
+								<th>
+									Propriétaire
+								</th>
+								<th>
+									Vacancier
+								</th>
+								<th>
+									Voir Admin
+								</th>
+								<th>
+									Voir Site
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for booking in lastBookings %}
+								<tr>
+									<td>
+										{{ booking.booking.id }}
+									</td>
+									<td>
+										{{ booking.booking.createdAt | date("d/m/Y") }}
+									</td>
+									<td>
+										{{ booking.lastName }}
+									</td>
+									<td>
+										{{ booking.booking.booker.firstName }}
+									</td>
+									<td>
+										<a href="{{path('admin_bookings_edit', {'id':booking.booking.id})}}">
+											<i class="fas fa-pen"></i>
+
+										</a>
+									</td>
+									<td>
+										<a href="{{path('booking_show', {'id':booking.booking.id})}}">
+											<i class="fas fa-pen"></i>
+
+										</a>
+									</td>
+								</tr>
+
+
 							{% endfor %}
 						</tbody>
 					</table>
