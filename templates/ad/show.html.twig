@@ -41,7 +41,7 @@
 
 	</div>
 
-	<div class="container alert alert-secondary">
+	<div class="container colorCard">
 		<div class="row">
 			<div class="col-md-8 mb-3">
 				{{ad.content}}
@@ -88,7 +88,7 @@
 					<h3 class="mb-3">
 						Commentaires de nos voyageurs :
 					</h3>
-					<div class="alert alert-info">
+					<div class="colorDiv">
 						<h4 class="alert-heading">
 							<div class="row align-items-center">
 								<div class="col text-center">
@@ -110,7 +110,7 @@
 
 
 					{% for comment in ad.comments %}
-						<div class="alert alert-info  rounded mb-3 py-3 px-3">
+						<div class="colorDiv rounded mb-3 py-3 px-3">
 							<strong>
 								{{comment.author.firstName}}
 							</strong>

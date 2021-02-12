@@ -7,11 +7,21 @@
 }
 
 .colorNav {
-    background-color: rgb(128, 128, 128);
+    background-color: #023059;
 }
 
 .colorCard {
-    background-color: rgb(95, 155, 115);
+    background-color: #023059;
+}
+
+.card,
+.card-body,
+.card-header {
+    background-color: #023059;
+}
+
+.colorDiv {
+    background-color: #03588C;
 }
 
 .colorContent1 {
