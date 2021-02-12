@@ -64,7 +64,7 @@
 							{{ad.title}}
 						</td>
 						<td>
-							<img src="{{ad.author.picture}}" alt="avatar de {{ad.author.fullName}}" class="avatar avatar-micro">
+							<img src="{{asset("/upload/image/"~ ad.author.picture)}}" alt="avatar de {{ad.author.fullName}}" class="avatar avatar-micro">
 							{{ad.author.firstName}}
 						</td>
 						<td class="text-center">
@@ -94,8 +94,6 @@
 	</div>
 {% endblock %}
 {% block javascripts %}
-	<script>
-		
-	</script>
+	<script></script>
 	{% include "_scripts/DataTables/jquery.dataTables.min.js" %}
 </script>{% endblock javascripts %}

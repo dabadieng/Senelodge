@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
             ->setEmail("daba@symfony.com")
             ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
             ->setHash($this->encoder->encodePassword($adminUser, "123456"))
-            ->setPicture("https://randomuser.me/api/portraits/women/85.jpg")
+            ->setPicture("dieng.jpg")
             ->addUserRole($adminRole);
         $manager->persist($adminUser);
 
@@ -44,30 +44,44 @@ class AppFixtures extends Fixture
         $genres = ['male', 'female'];
 
         //Gestion des utilisateurs
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 40; $i++) {
+            /**
+             * use API randomuser
+             * $genre = $faker->randomElement($genres);
+             *$picture = 'https://randomuser.me/api/portraits/';
+             *$pictureId = $faker->numberBetween(1, 99) . '.jpg';
+             *$picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
-            $genre = $faker->randomElement($genres);
-
-            $picture = 'https://randomuser.me/api/portraits/';
-            $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
-            $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+             */
 
             $user = new User();
             //le 1er paramètre correspond à l'entité déclarée dans le security.yml
             $hash = $this->encoder->encodePassword($user, 'password');
+            if ($i <= 20) {
+                $user
+                    ->setLastName($faker->lastName)
+                    ->setFirstName($faker->firstName("male"))
+                    ->setIntroduction($faker->sentence())
+                    ->setEmail($faker->email)
+                    ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
+                    ->setHash($hash)
+                    ->setPicture($i . ".jpg");
 
-            $user
-                ->setLastName($faker->lastName)
-                ->setFirstName($faker->firstName($genre))
-                ->setIntroduction($faker->sentence())
-                ->setEmail($faker->email)
-                ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
-                ->setHash($hash)
-                ->setPicture($picture);
+                $manager->persist($user);
+                $users[] = $user;
+            } else {
+                $user
+                    ->setLastName($faker->lastName)
+                    ->setFirstName($faker->firstName("female"))
+                    ->setIntroduction($faker->sentence())
+                    ->setEmail($faker->email)
+                    ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
+                    ->setHash($hash)
+                    ->setPicture($i . ".jpg");
 
-            $manager->persist($user);
-            $users[] = $user;
+                $manager->persist($user);
+                $users[] = $user;
+            }
         }
 
         //Gestion des annonces

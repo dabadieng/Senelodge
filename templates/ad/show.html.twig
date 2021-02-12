@@ -137,7 +137,7 @@
 				<div class="row mb-3 align-items-center">
 					<div class="col-3">
 						<a href="{{path('user_show', {'slug':a.slug})}}">
-							<img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
+							<img src="{{asset("/upload/image/"~ a.picture)}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
 						</a>
 					</div>
 

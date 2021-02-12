@@ -51,7 +51,7 @@
 							<hr>
 
 							<div class="card-text">
-								<img src="{{data.user.picture}}" alt="Avatar de {{data.user.fullName}}" class="float-left mr-3">
+								<img class="avatar avatar.medium" src="{{asset("/upload/image/"~ data.user.picture)}}" alt="Avatar de {{data.user.fullName}}" class="float-left mr-3">
 								<p>
 									{{data.user.introduction}}
 								</p>

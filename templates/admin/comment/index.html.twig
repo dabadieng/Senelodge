@@ -44,7 +44,7 @@
 							{{comment.createdAt|date('d/m/Y H:i')}}
 						</td>
 						<td>
-							<img src="{{comment.author.picture}}" alt="" class="avatar avatar-micro">
+							<img src="{{asset("/upload/image/"~ comment.author.picture)}}" alt="" class="avatar avatar-micro">
 							{{comment.author.fullName}}
 						</td>
 						<td>
@@ -70,7 +70,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		
+
 		{{ pagination.display() }}
 	</div>
 {% endblock %}

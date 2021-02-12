@@ -25,10 +25,15 @@ Encore
  * NOTE : executer avec npm run dev
  */
 .addEntry('css/app', [
-    './assets/css/app.css',
-    './assets/css/bootstrap.min.css',
-    './assets/css/datapicker.min.css',
-])
+        './assets/css/app.css',
+        './assets/css/bootstrap.min.css',
+        './assets/css/datapicker.min.css',
+    ])
+    .addEntry('css/admin', [
+        './assets/css/app.css',
+        './assets/css/bootstrap.admin.css',
+        './assets/css/datapicker.min.css',
+    ])
 
 .addEntry('js/app',
     './assets/js/app.js',
