@@ -5,33 +5,52 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
+use App\Entity\SearchAd;
+use App\Form\SearchAdType;
+use App\Entity\Localisation;
 use App\Repository\AdRepository;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdController extends AbstractController
 {
+
     /**
-     * @Route("/ads/{page<\d+>?1}", name="ad_index")
+     * @Route("/ads/index", name="ad_index")
      */
-    public function index(PaginationService $pagination, AdRepository $repos, $page)
+    public function index(Request $request, PaginatorInterface $paginator, AdRepository $repos)
     {
-        $pagination->setEntityClass(Ad::class)
-            ->setLimit(9)
-            ->setPage($page);
+        $searchAd = new SearchAd();
+
+        $form = $this->createForm(SearchAdType::class, $searchAd);
+        $form->handleRequest($request);
+
+        // Paginate the results of the query
+        $appointments = $paginator->paginate(
+            $repos->findAllFiltreQuery($searchAd),
+            $request->query->getInt('page', 1),
+            9
+        );
+
+        //$appointments = $repos->findByFiltre($searchAd);
 
         return $this->render('ad/index.html.twig', [
-            "pagination" => $pagination
+            //"pagination" => $pagination,
+            'appointments' => $appointments,
+            'form' => $form->createView()
         ]);
     }
+
+
     /**
      * permet de créer une annonce
      *@Route("/ads/new", name="ads_create")

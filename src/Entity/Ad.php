@@ -69,11 +69,6 @@ class Ad
      */
     private $content;
 
-    /**
-     * @ORM\Column(type="text")
-     * ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $coverImage;
 
     /**
      * @ORM\Column(type="integer")
@@ -102,6 +97,17 @@ class Ad
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $coverImage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Localisation::class, inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $localisation;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -126,9 +132,10 @@ class Ad
         //Initialise la coverImage avec la 1ere image de l'entity image
         /*
         if(empty($this->coverImage)) {
-            $this->coverImage = $this->images->get(0)->getUrl(); 
+            $this->coverImage = ""; 
         }
         */
+        
     }
 
     public function getId(): ?int
@@ -246,28 +253,6 @@ class Ad
         return $this;
     }
 
-    public function getCoverImage(): ?string
-    {
-
-        if (count($this->images) > 0) {
-            $cov = array_reduce($this->images->toArray(), function ($c, $image) {
-                if ($c == 0) {
-                    $this->coverImage = $image->getUrl();
-                    return $this->coverImage;
-                }
-            }, 0); //en mettant 0 cela initialise par défaut le total à 0
-
-        }
-        return $this->coverImage;
-    }
-
-    public function setCoverImage(string $coverImage): self
-    {
-
-        $this->coverImage = $coverImage;
-
-        return $this;
-    }
 
     public function getRooms(): ?int
     {
@@ -398,5 +383,39 @@ class Ad
             if ($comment->getAuthor() == $author) return $comment;
         }
         return null;
+    }
+
+    public function getCoverImage(): ?string
+    {
+
+        if (count($this->images) > 0) {
+            $cov = array_reduce($this->images->toArray(), function ($c, $image) {
+                if ($c == 0) {
+                    $this->coverImage = $image->getUrl();
+                    return $this->coverImage;
+                }
+            }, 0); //en mettant 0 cela initialise par défaut le total à 0
+
+        }
+        return $this->coverImage;
+    }
+
+    public function setCoverImage(?string $coverImage): self
+    {
+        $this->coverImage = $coverImage;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?Localisation
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?Localisation $localisation): self
+    {
+        $this->localisation = $localisation;
+
+        return $this;
     }
 }

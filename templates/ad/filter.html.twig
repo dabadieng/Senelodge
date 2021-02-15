@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Filter mes annonces
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div>
+			<h1 class="h3">
+				Filtrer ma recherche
+			</h1>
+			{{form_start(form)}}
+			<div class="row">
+				{% for local in form.localisation %}
+					<div class="col-2">
+						{{form_row(local)}}
+					</div>
+				{% endfor %}
+			</div>
+			<div class="row">
+				<div class="col">
+					{{form_row(form.rooms)}}
+				</div>
+				<div class="col">
+					{{form_row(form.maxPrice)}}
+				</div>
+				<div class="col">
+					<button href="{{path('ad_index')}}">
+						Rechercher
+					</button>
+				</div>
+				{{form_end(form)}}
+			</div>
+		</div>
+	{% endblock body %}

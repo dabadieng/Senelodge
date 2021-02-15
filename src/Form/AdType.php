@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Ad;
+use App\Entity\Localisation;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -23,6 +25,12 @@ class AdType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add("localisation", EntityType::class, [
+                'class' => Localisation::class,
+                'choice_label' => function ($localisation) {
+                    return $localisation->getName();
+                }
+            ])
             ->add(
                 'title',
                 TextType::class,

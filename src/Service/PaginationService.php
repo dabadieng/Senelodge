@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Twig\Environment;
+use App\Entity\SearchAd;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -184,6 +185,57 @@ class PaginationService
         return $this->manager
             ->getRepository($this->entityClass)
             ->findBy([], ["$propriete" => "$type"], $this->limit, $offset);
+    }
+
+    /**
+     * Permet de récupérer les données filtrées 
+     * 
+     * Elle se sert de Doctrine afin de récupérer le repository pour l'entité spécifiée
+     * puis grâce au repository et à sa fonction findBy() on récupère les données dans une 
+     * certaine limite et en partant d'un offset
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas définie
+     *
+     * @return array
+     */
+    public function getDataFilter($searchAd)
+    {
+        if (empty($this->entityClass)) {
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+        // 1) Calculer l'offset
+        $offset = $this->currentPage * $this->limit - $this->limit;
+
+        $rooms = $searchAd->getRooms();
+        //dump($rooms);
+        //die();
+        $criteres[] = array_filter(array(
+            "rooms" => 1,
+            "price" => 82
+        ));
+        $result = $this->manager
+            ->getRepository($this->entityClass)
+            ->findByFiltre($searchAd);
+
+        // Le résultat total 
+        $total = count($result);
+
+        // Le nombre de pages total
+        $this->pages = ceil($total / $this->limit);
+
+        $rooms = ["rooms" => 3];
+        //$rooms = ["price" => 119];
+        $price = ["price" => 93, "rooms" => 3];
+
+        $resultat = $this->manager
+            ->getRepository($this->entityClass)
+            ->findByFiltre($searchAd);
+
+        // 2) Demander au repository de trouver les éléments à partir d'un offset et 
+        // dans la limite d'éléments imposée (voir propriété $limit)
+        return $this->manager
+            ->getRepository($this->entityClass)
+            ->findBy($resultat, [], $this->limit, $offset);
     }
 
     /**

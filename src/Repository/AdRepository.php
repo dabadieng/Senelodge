@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Ad;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use App\Entity\SearchAd;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Ad|null find($id, $lockMode = null, $lockVersion = null)
@@ -29,6 +32,44 @@ class AdRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Filtre les annonces 
+     *
+     * @param SearchAd $search
+     * @return Query
+     */
+    public function findAllFiltreQuery(SearchAd $search): Query
+    {
+
+        $query = $this->createQueryBuilder('a');
+        //$query = $this->findFiltreQuery(); 
+
+        if ($search->getMaxPrice()) {
+            $query = $query
+                ->andWhere('a.price <= :maxPrice')
+                ->setParameter('maxPrice', $search->getMaxPrice());
+        }
+
+        if ($search->getRooms()) {
+            $query = $query
+                ->andWhere('a.rooms = :rooms')
+                ->setParameter('rooms', $search->getRooms());
+        }
+
+        if ($search->getLocalisation()->count() > 0) {
+            foreach ($search->getLocalisation() as $key => $name) {
+                $query = $query
+                    ->andWhere("a.localisation IN (:name)")
+                    ->setParameter("name", $name);
+            }
+        }
+
+
+
+        return $query->getQuery(); 
+        //->getResult();
     }
 
     // /**
