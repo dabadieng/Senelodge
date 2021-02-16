@@ -337,7 +337,7 @@ class Ad
             }
         }
 
-        return $this;
+        return $this; 
     }
 
     /**
