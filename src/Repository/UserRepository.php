@@ -24,7 +24,7 @@ class UserRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder("u")
             ->join("u.ads", "a")
-            ->join("a.comments", "c")
+            ->join("a.descriptions", "c")
             ->select("u as user, AVG(c.rating) as avgRatings")
             ->groupBy("u")
             ->orderBy("avgRatings", "DESC")

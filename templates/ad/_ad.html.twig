@@ -10,7 +10,7 @@
 				&euro; / nuit
 			</strong>
 			<br>
-			{% if ad.comments | length > 0 %}
+			{% if ad.descriptions | length > 0 %}
 				{% include "partials/rating.html.twig" with {"rating":ad.avgRatings} %}
 			{% else %}
 				<small>

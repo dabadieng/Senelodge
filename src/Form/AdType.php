@@ -66,7 +66,7 @@ class AdType extends ApplicationType
                 )
             )
             ->add(
-                'content',
+                'description',
                 TextareaType::class,
                 $this->getConfiguration("Description détaillée", "Tapez une description qui donne vraiment envie de venir chez vous !")
             )

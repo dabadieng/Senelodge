@@ -26,7 +26,7 @@ class AdRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->select('a as annonce, AVG(c.rating) as avgRatings')
-            ->join('a.comments', 'c')
+            ->join('a.descriptions', 'c')
             ->groupBy('a')
             ->orderBy('avgRatings', 'DESC')
             ->setMaxResults($limit)
@@ -54,7 +54,7 @@ class AdRepository extends ServiceEntityRepository
 
         if ($search->getRooms()) {
             $query = $query
-                ->andWhere('a.rooms = :rooms')
+                ->andWhere('a.rooms => :rooms')
                 ->setParameter('rooms', $search->getRooms());
         }
 

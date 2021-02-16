@@ -55,6 +55,12 @@ div.ad p {
     text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
+.homeText {
+    color: rgb(41, 23, 83);
+    text-shadow: 3px 3px 3px rgba(0, 0, 1, 1);
+    text-decoration-color: #03588C;
+}
+
 div.ad .btn {
     margin-top: 2em;
     font-size: 2em;

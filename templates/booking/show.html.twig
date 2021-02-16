@@ -153,7 +153,7 @@
 						</a>
 					</h4>
 					<img src="{{asset("/upload/image/"~ ad.coverImage)}}" alt="Image de {{ad.title}}" class="img-fluid">
-					{{ad.content | raw}}
+					{{ad.description | raw}}
 					<br>
 					<a href="{{path('ads_show', {'slug':ad.slug})}}" class="btn btn-primary">
 						Plus d'informations

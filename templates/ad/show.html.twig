@@ -45,7 +45,7 @@
 	<div class="container colorCard">
 		<div class="row">
 			<div class="col-md-8 mb-3">
-				{{ad.content}}
+				{{ad.description}}
 
 				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
@@ -85,7 +85,7 @@
 				</div>
 				<hr>
 
-				{% if ad.comments |length > 0 %}
+				{% if ad.descriptions |length > 0 %}
 					<h3 class="mb-3">
 						Commentaires de nos voyageurs :
 					</h3>
@@ -100,7 +100,7 @@
 									<br>
 									<small>
 										Calculée sur
-										{{ad.comments | length}}
+										{{ad.descriptions | length}}
 										avis !
 									</small>
 								</div>
@@ -110,7 +110,7 @@
 					</div>
 
 
-					{% for comment in ad.comments %}
+					{% for comment in ad.descriptions %}
 						<div class="colorDiv rounded mb-3 py-3 px-3">
 							<strong>
 								{{comment.author.firstName}}

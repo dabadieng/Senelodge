@@ -95,7 +95,7 @@ class Ad
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="ad", orphanRemoval=true)
      */
-    private $comments;
+    private $descriptions;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -112,7 +112,7 @@ class Ad
     {
         $this->images = new ArrayCollection();
         $this->bookings = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->descriptions = new ArrayCollection();
     }
 
     /**
@@ -130,11 +130,11 @@ class Ad
         }
 
         //Initialise la coverImage avec la 1ere image de l'entity image
-        /*
+        
         if(empty($this->coverImage)) {
-            $this->coverImage = ""; 
+            $this->coverImage = "01.png"; 
         }
-        */
+        
         
     }
 
@@ -146,15 +146,15 @@ class Ad
     public function getAvgRatings()
     {
         /*Calculer la somme des notations
-        *$this->comments est un type collection en utilisant la function toArray() permet
+        *$this->descriptions est un type collection en utilisant la function toArray() permet
         *de le transformer en un Array 
         */
-        $sum = array_reduce($this->comments->toArray(), function ($total, $comment) {
+        $sum = array_reduce($this->descriptions->toArray(), function ($total, $comment) {
             return $total + $comment->getRating();
         }, 0); //en mettant 0 cela initialise le total à 0
 
         //Faire la division pour avoir la moyenne 
-        if (count($this->comments) > 0) return $sum / count($this->comments);
+        if (count($this->descriptions) > 0) return $sum / count($this->descriptions);
 
         return 0;
     }
@@ -343,15 +343,15 @@ class Ad
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): Collection
+    public function getdescriptions(): Collection
     {
-        return $this->comments;
+        return $this->descriptions;
     }
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
+        if (!$this->descriptions->contains($comment)) {
+            $this->descriptions[] = $comment;
             $comment->setAd($this);
         }
 
@@ -360,8 +360,8 @@ class Ad
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
+        if ($this->descriptions->contains($comment)) {
+            $this->descriptions->removeElement($comment);
             // set the owning side to null (unless already changed)
             if ($comment->getAd() === $this) {
                 $comment->setAd(null);
@@ -379,7 +379,7 @@ class Ad
      */
     public function getCommentFromAuthor(User $author)
     {
-        foreach ($this->comments as $comment) {
+        foreach ($this->descriptions as $comment) {
             if ($comment->getAuthor() == $author) return $comment;
         }
         return null;
