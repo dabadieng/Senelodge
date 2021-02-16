@@ -53,7 +53,7 @@ class AdController extends AbstractController
 
     /**
      * permet de créer une annonce
-     *@Route("/ads/new", name="ads_create")
+     *@Route("/ad/new", name="ads_create")
      *Permet de gérer les droits 
      *@IsGranted("ROLE_USER")
      *

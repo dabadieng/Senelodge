@@ -68,12 +68,9 @@ class AdType extends ApplicationType
             ->add(
                 'content',
                 TextareaType::class,
-                $this->getConfiguration(
-                    'Description détaillée',
-                    'Entrer une description detaillée'
-                )
+                $this->getConfiguration("Description détaillée", "Tapez une description qui donne vraiment envie de venir chez vous !")
             )
-            ->add(
+            ->add( 
                 'rooms',
                 IntegerType::class,
                 $this->getConfiguration(
@@ -99,7 +96,7 @@ class AdType extends ApplicationType
 
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
-                'required' => false,
+                'required' => true,
 
                 // Add multiple
                 'multiple' => true,

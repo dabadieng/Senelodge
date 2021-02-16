@@ -63,33 +63,35 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get("picture")->getData();
 
-            //On génère un nouveau nom de fichier 
-            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            if ($image !== null) {
+                //On génère un nouveau nom de fichier 
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
 
-            //On copie le fichier dans le dossier upload 
-            $image->move(
-                //Lieu de stockage défini dans service.yml 
-                $this->getParameter("image_directory"),
-                //nom du fichier à déplacer dans le dossier 
-                $fichier
-            );
+                //On copie le fichier dans le dossier upload 
+                $image->move(
+                    //Lieu de stockage défini dans service.yml 
+                    $this->getParameter("image_directory"),
+                    //nom du fichier à déplacer dans le dossier 
+                    $fichier
+                );
 
-            $user->setPicture($fichier); 
+                $user->setPicture($fichier);
+            }
 
-            $hash = $encoder->encodePassword($user, $user->getHash());
-            $user->setHash($hash);
+        $hash = $encoder->encodePassword($user, $user->getHash());
+        $user->setHash($hash);
 
-            $manager->persist($user);
-            $manager->flush();
+        $manager->persist($user);
+        $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'Votre compte à bien été créé ! Vous pouvez maintenant vous connecteee!'
-            );
+        $this->addFlash(
+            'success',
+            'Votre compte à bien été créé ! Vous pouvez maintenant vous connecteee!'
+        );
 
-            //Sending email and login
-            return $this->redirectToRoute('email_registration_succes', ['ta' => $user->getEmail(), 'un' => $user->getFirstName()]);
-        }
+        //Sending email and login
+        return $this->redirectToRoute('email_registration_succes', ['ta' => $user->getEmail(), 'un' => $user->getFirstName()]);
+    }
 
         return $this->render('account/registration.html.twig', [
             'form' => $form->createView(),
