@@ -27,7 +27,7 @@ class SearchAdType extends AbstractType
                 'required' => false,
                 'label' => "Nombre de chambres ",
                 'attr' => [
-                    'placeholder' => 'Entrer le nombre de chambres souhaité '
+                    'placeholder' => 'Entrer le nombre de chambres souhaités '
                 ]
             ])
             ->add('maxPrice', IntegerType::class, [
@@ -46,5 +46,5 @@ class SearchAdType extends AbstractType
             'method' => 'get',
             'csrf_protection' => false
         ]);
-    }
+    } 
 }

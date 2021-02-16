@@ -9,13 +9,8 @@
 		<h1 class="my-5">
 			Voici les annonces de nos hôtes !
 		</h1>
-		<div>
-			<a href="{{path('ad_index')}}" class="btn btn-btn colorCard">
-				Filtrer ma recherche
-			</a>
-		</div>
 		<div class="container">
-			<div class="container colorCard mb-3">
+			<div id="d1" class="container colorCard mb-3">
 				<h1 class="h3">
 					Filtrer ma recherche
 				</h1>
@@ -27,7 +22,7 @@
 						</div>
 					{% endfor %}
 				</div>
-				<div class="row">
+				<div class="form-row align-items-end">
 					<div class="col">
 						{{form_row(form.rooms)}}
 					</div>
@@ -35,12 +30,19 @@
 						{{form_row(form.maxPrice)}}
 					</div>
 					<div class="col">
-						<button>
-							Rechercher
-						</button>
+						<div class="form-group">
+							<button>
+								Rechercher
+							</button>
+						</div>
 					</div>
 					{{form_end(form)}}
 				</div>
+			</div>
+			<div class="container mb-3">
+				<button id="togg1" class="btn-lg">
+					Filtrer
+				</button>
 			</div>
 			<div class="row">
 				{% for ad in appointments %}
@@ -52,4 +54,7 @@
 		<div class="navigation colorCard align-items-center">
 			{{ knp_pagination_render(appointments) }}
 		</div>
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{asset("masquer.js")}}"></script>
 	{% endblock %}
