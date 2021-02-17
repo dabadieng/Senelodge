@@ -56,9 +56,8 @@ div.ad p {
 }
 
 .homeText {
-    color: rgb(41, 23, 83);
-    text-shadow: 3px 3px 3px rgba(0, 0, 1, 1);
-    text-decoration-color: #03588C;
+    color: rgb(41, 23, 23);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 div.ad .btn {

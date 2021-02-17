@@ -54,7 +54,7 @@ class AdRepository extends ServiceEntityRepository
 
         if ($search->getRooms()) {
             $query = $query
-                ->andWhere('a.rooms => :rooms')
+                ->andWhere('a.rooms = :rooms')
                 ->setParameter('rooms', $search->getRooms());
         }
 
