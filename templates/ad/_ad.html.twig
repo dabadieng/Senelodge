@@ -1,7 +1,7 @@
 {% set url = path('ads_show', {'slug': ad.slug}) %}
 
 <div class="col-md-4">
-	<div class="card mb-3">
+	<div class="card mb-3 bobcat">
 		<div class="card-header text-center">
 			{{ ad.rooms }}
 			chambres,
@@ -37,7 +37,7 @@
 			<p class="card-text">
 				{{ ad.introduction | slice(0, 100) }}...
 			</p>
-			<a href="{{ url }}" class="btn btn-primary float-right">
+			<a href="{{ url }}" class="btn btn-success float-right">
 				En savoir plus !
 			</a>
 			{% if app.user and app.user == ad.author %}

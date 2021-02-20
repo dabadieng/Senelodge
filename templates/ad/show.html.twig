@@ -7,16 +7,16 @@
 {% block body %}
 
 	{#<div class="ad" style="background-image : url({{asset("/upload/image/"~ ad.coverImage)}})">#}
-	<div class="ad" style="background-image : url({{asset("/upload/image/"~ ad.coverImage)}})">
+	<div class="ad" style="background-image : url({{asset(" /upload/image/"~ ad.coverImage)}})">
 		<div class="container">
 			<h1>
 				{{ad.title}}
 			</h1>
-			<p>
+			<h5>
 				Ceci est l'introduction
 				{{ad.introduction}}
-			</p>
-			<p class="h2">
+			</h5>
+			<h5>
 				<strong>
 					{{ad.rooms}}
 					chambres
@@ -26,7 +26,7 @@
 					{{ad.price | number_format(2, ',', ' ' )}}
 				</strong>
 				par Nuit
-			</p>
+			</h5>
 			<a href="{{path('booking_create',{'slug':ad.slug})}}" class="btn btn-primary">
 				Réserver
 			</a>
@@ -44,8 +44,11 @@
 
 	<div class="container colorCard">
 		<div class="row">
-			<div class="col-md-8 mb-3">
-				{{ad.description}}
+			<div class="col-md-8 mb-3 description">
+				<p>
+					{{ad.description}}
+				</p>
+
 
 				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
@@ -86,14 +89,16 @@
 				<hr>
 
 				{% if ad.descriptions |length > 0 %}
-					<h3 class="mb-3">
+					<h4 class="mb-3">
 						Commentaires de nos voyageurs :
-					</h3>
+					</h4>
 					<div class="colorDiv">
 						<h4 class="alert-heading">
 							<div class="row align-items-center">
 								<div class="col text-center">
-									Note globale donnée par nos voyageurs
+									<h5>
+										Note globale donnée par nos voyageurs
+									</h5>
 								</div>
 								<div class="col">
 									{% include "partials/rating.html.twig" with {"rating":ad.avgRatings} %}
@@ -116,24 +121,24 @@
 								{{comment.author.firstName}}
 							</strong>
 							a dit :
-							<blockquote class= "text-white">
+							<blockquote class="text-white">
 								{{comment.content}}
 							</blockquote>
 							<strong>
-								Note donnée 
+								Note donnée
 							</strong>
 							{% include "partials/rating.html.twig" with {"rating":comment.rating} %}
 						</div>
 
 					{% endfor %}
 				{% else %}
-					<h2>
+					<h5>
 						Cette annonce n'a pas encore reçu de commentaires
-					</h2>
+					</h5>
 				{% endif %}
 
 			</div>
-			<div class="col">
+			<div class="col description">
 				{% set a = ad.author %}
 				<div class="row mb-3 align-items-center">
 					<div class="col-3">
@@ -159,7 +164,10 @@
 
 					</div>
 				</div>
-				{{a.description | raw }}
+				<p>
+					{{a.description | raw }}
+				</p>
+
 			</div>
 
 		</div>

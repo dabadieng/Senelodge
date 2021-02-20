@@ -7,26 +7,71 @@
 }
 
 .colorNav {
-    background-color: #023059;
+    background-color: #276678;
+}
+
+.colorNav a {
+    color: white;
+    font-size: medium;
+}
+
+.colorFooter {
+    background-color: #909ca5;
+}
+
+.colorFooter p,
+.colorFooter a,
+.colorFooter h5 {
+    color: white;
+    font-weight: bolder;
 }
 
 .colorCard {
-    background-color: #023059;
+    background-color: #7a7979;
+}
+
+.description {
+    color: white;
 }
 
 .card,
 .card-body,
 .card-header {
-    background-color: #023059;
+    background-color: #d3e0ea;
+}
+
+.bobcat {
+    box-shadow: 8px -5px rgb(66, 66, 66);
+}
+
+.card-body p {
+    color: rgb(68, 67, 67);
+}
+
+.card-title a {
+    color: black;
+}
+
+.card-body .btn {
+    color: white;
 }
 
 .colorDiv {
-    background-color: #03588C;
+    background-color: #918e8e;
+    border-radius: 10px;
 }
 
+
+/* color de la div accueil */
+
 .colorDivHome {
-    background-color: #073863;
+    background-color: #818181;
     border-radius: 20px;
+}
+
+.colorDivHome p {
+    color: white;
+    font-size: medium;
 }
 
 .colorContent1 {
@@ -50,21 +95,28 @@ div.ad {
 }
 
 div.ad h1,
+div.ad h5,
+div.ad strong {
+    color: #276678;
+    font-weight: bolder;
+}
+
 div.ad p {
     color: white;
     text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
 .homeText {
-    color: rgb(41, 23, 23);
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    color: #276678;
+    font-weight: bolder;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
 }
 
 div.ad .btn {
     margin-top: 2em;
     font-size: 2em;
     line-height: 1.5em;
-    background-color: #023059;
+    background-color: #276678;
 }
 
 div.carousel-caption {

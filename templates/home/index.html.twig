@@ -43,10 +43,13 @@
 		<div class="row">
 			{% for data in users %}
 				<div class="col">
-					<div class="card border-secondary mb-3 colorCard">
+					<div class="card border-secondary mb-3 colorCard bobcat">
 						<div class="card-body colorCard">
 							<h4 class="card-title">
-								{{data.user.fullName}}
+								<a href="">
+									{{data.user.fullName}}
+								</a>
+
 							</h4>
 
 							<hr>
