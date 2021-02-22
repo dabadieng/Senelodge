@@ -60,7 +60,7 @@
 					<div class="carousel-inner">
 						{% for image in ad.images %}
 							<div class="carousel-item {% if loop.first %}active{% endif %}">
-								<img src="{{asset("/upload/image/"~ image.url)}}" class="d-block w-100" alt="...">
+								<img src="{{asset("/upload/image/"~ image.url) | imagine_filter('my_thumb') }}" class="d-block w-100" alt="...">
 								<div class="carousel-caption d-none d-md-block">
 									<h5>
 										{{ad.title}}
