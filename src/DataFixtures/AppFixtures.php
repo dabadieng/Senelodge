@@ -106,7 +106,7 @@ class AppFixtures extends Fixture
                     ->setTitle($title)
                     ->setCoverImage($coverImage)
                     ->setIntroduction($introduction)
-                    ->setContent($content)
+                    ->setDescription($content)
                     ->setPrice(mt_rand(80, 200))
                     ->setRooms(mt_rand(1, 6))
                     ->setAuthor($user)
