@@ -1,7 +1,7 @@
 {% set url = path('ads_show', {'slug': ad.slug}) %}
 
 <div class="col-md-4">
-	<div class="card mb-3 bobcat">
+	<div class="card mb-3 box3D">
 		<div class="card-header text-center">
 			{{ ad.rooms }}
 			chambres,
@@ -25,26 +25,35 @@
 
 		</a>
 
-		<div class="card-body contenu">
+		<div class="card-body hauteurDiv">
 			<h5 class="card-title">
 				<a href="{{ url }}">
-					{{ ad.title | slice(0, 22) }}...
+					{{ ad.title | slice(0, 22) }}
+					...
 				</a>
 			</h5>
 			<p class="card-text">
 				{{ ad.localisation.name }}
 			</p>
 			<p class="card-text">
-				{{ ad.introduction | slice(0, 100) }}...
+				{{ ad.introduction | slice(0, 100) }}
+				...
 			</p>
-			<a href="{{ url }}" class="btn btn-success float-right">
-				En savoir plus !
-			</a>
-			{% if app.user and app.user == ad.author %}
-				<a href="{{ path('ads_edit', {'slug': ad.slug}) }}" class="btn btn-primary float-right">
-					Modifier l'annonce
-				</a>
-			{% endif %}
+			<div class="row">
+				<div class="col-4">
+					{% if app.user and app.user == ad.author %}
+						<a href="{{ path('ads_edit', {'slug': ad.slug}) }}" class="btn btn-primary float-right">
+							Modifier
+						</a>
+					{% endif %}
+				</div>
+				<div class="col-8">
+					<a href="{{ url }}" class="btn btn-success float-right">
+						En savoir plus !
+					</a>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>

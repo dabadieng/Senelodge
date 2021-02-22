@@ -50,9 +50,12 @@
 				{% endfor %}
 			</div>
 		</div>
-
-		<div class="navigation colorCard align-items-center">
-			{{ knp_pagination_render(appointments) }}
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				{{ knp_pagination_render(appointments) }}
+			</div>
+			<div class="col-md-4"></div>
 		</div>
 	{% endblock %}
 	{% block javascripts %}

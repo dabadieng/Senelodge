@@ -1,10 +1,12 @@
-.contenu {
-    height: 220px;
+/* CONTAINER *************************************************************/
+
+/ div.container,
+div.container-fluid {
+    margin-top: 20px;
 }
 
-.contenuDashboard {
-    height: 600px;
-}
+
+/* Partials **********************************************************************/
 
 .colorNav {
     background-color: #276678;
@@ -26,43 +28,8 @@
     font-weight: bolder;
 }
 
-.colorCard {
-    background-color: #7a7979;
-}
 
-.description {
-    color: white;
-}
-
-.card,
-.card-body,
-.card-header {
-    background-color: #d3e0ea;
-}
-
-.bobcat {
-    box-shadow: 8px -5px rgb(66, 66, 66);
-}
-
-.card-body p {
-    color: rgb(68, 67, 67);
-}
-
-.card-title a {
-    color: black;
-}
-
-.card-body .btn {
-    color: white;
-}
-
-.colorDiv {
-    background-color: #918e8e;
-    border-radius: 10px;
-}
-
-
-/* color de la div accueil */
+/* HOME ******************************************************************************/
 
 .colorDivHome {
     background-color: #818181;
@@ -74,14 +41,91 @@
     font-size: medium;
 }
 
+
+/* couleur des titres des pages   ****************************************************/
+
+.homeText {
+    color: #276678;
+    font-weight: bolder;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Gestion de la largeur des cartes vue user et vue admin  ****************************/
+
+
+/* Hauteur de la div vue site */
+
+.hauteurDiv {
+    height: 220px;
+}
+
+.contenuDashboard {
+    height: 600px;
+}
+
+
+/* Gestion de l'apparence et couleur des cartes ******************************/
+
+
+/* Couleur du text dans le show d'une annonce */
+
+.description {
+    color: white;
+}
+
+
+/* Couleur des card */
+
+.card,
+.card-body,
+.card-header {
+    background-color: #d3e0ea;
+}
+
+
+/*Reflet 3D des card */
+
+.box3D {
+    box-shadow: 8px -5px rgb(66, 66, 66);
+}
+
+
+/* Couleur du text dans le body des card */
+
+.card-body p {
+    color: rgb(68, 67, 67);
+}
+
+
+/* Couleur du titre sous forme de lien */
+
+.card-title a {
+    color: black;
+}
+
+
+/* Couleur du text dans le btn */
+
+.card-body .btn {
+    color: rgb(1, 24, 1);
+    font-size: medium;
+}
+
+
+/* Background des div de commentaires et notre dans le show d'une annonce */
+
+.colorDiv {
+    background-color: #918e8e;
+    border-radius: 10px;
+}
+
 .colorContent1 {
     background-color: grey;
 }
 
-div.container,
-div.container-fluid {
-    margin-top: 20px;
-}
+
+/* SHOW d'une annonce *******************************************************/
 
 div.ad-title {
     padding: 2em;
@@ -104,12 +148,6 @@ div.ad strong {
 div.ad p {
     color: white;
     text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
-}
-
-.homeText {
-    color: #276678;
-    font-weight: bolder;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
 }
 
 div.ad .btn {
