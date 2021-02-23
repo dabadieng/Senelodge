@@ -1,6 +1,6 @@
 /* CONTAINER *************************************************************/
 
-/ div.container,
+div.container,
 div.container-fluid {
     margin-top: 20px;
 }
@@ -70,8 +70,18 @@ div.container-fluid {
 
 /* Couleur du text dans le show d'une annonce */
 
-.description {
+.colorShowAd {
+    background-color: #7a7979;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.colorShowAd .description {
     color: white;
+}
+
+.colorShowAd .row p {
+    font-size: 1.5em;
 }
 
 
@@ -161,6 +171,14 @@ div.carousel-caption {
     text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
+.carousel-item img {
+    width: 700px;
+    height: 600px;
+}
+
+
+/* Photo avater ************************************************/
+
 .avatar {
     max-width: 128px;
     max-height: 128px;
@@ -182,14 +200,23 @@ div.carousel-caption {
     max-height: 20px;
 }
 
+
+/* Gestion des dates pour les réservations ***************************/
+
 .datepicker table tr td.disabled,
 .datepicker table tr td.disabled:hover {
     color: firebrick !important;
 }
 
+
+/* Coloration des étoiles de notation *****************************************************/
+
 span.rating i {
     color: goldenrod;
 }
+
+
+/* Élement alert ***************************************************/
 
 .alert a {
     text-decoration: none;
@@ -197,4 +224,53 @@ span.rating i {
 
 .alert .btn {
     color: white;
+}
+
+
+/* Armonisation des formulaires ***************************************/
+
+.formulaire {
+    background-color: #276678;
+    color: white;
+    font-size: large;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.formulaire .btn {
+    color: rgb(8, 53, 8);
+    font-size: medium;
+}
+
+.formulaire a {
+    color: white;
+    font-size: medium;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    height: 3em;
+}
+
+input[type="textarea"] {
+    height: 20em;
+}
+
+.badge.badge-primary a {
+    color: white;
+    font-weight: bold;
+}
+
+
+/* Components **********************************************************************/
+
+@media (min-width: 576px) {
+    div.modal.details {
+        position: relative;
+        display: block;
+    }
+    div.modal.details .modal-dialog {
+        max-width: 100%;
+    }
 }

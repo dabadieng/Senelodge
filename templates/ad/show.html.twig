@@ -1,4 +1,6 @@
 {% extends "base.html.twig" %}
+{% from "partials/rating.html.twig" import stars %}
+{% from "macros/components.html.twig" import modal %}
 
 {% block title %}
 	{{ad.title}}
@@ -6,7 +8,8 @@
 
 {% block body %}
 
-	{#<div class="ad" style="background-image : url({{asset("/upload/image/"~ ad.coverImage)}})">#}
+{#{ modal(ad.title, ad.description) }#}
+	
 	<div class="ad" style="background-image : url({{asset(" /upload/image/"~ ad.coverImage)}})">
 		<div class="container">
 			<h1>
@@ -42,7 +45,7 @@
 
 	</div>
 
-	<div class="container colorCard">
+	<div class="container colorShowAd">
 		<div class="row">
 			<div class="col-md-8 mb-3 description">
 				<p>
@@ -60,7 +63,7 @@
 					<div class="carousel-inner">
 						{% for image in ad.images %}
 							<div class="carousel-item {% if loop.first %}active{% endif %}">
-								<img src="{{asset("/upload/image/"~ image.url) | imagine_filter('my_thumb') }}" class="d-block w-100" alt="...">
+								<img src="{{asset("/upload/image/"~ image.url) }}" class="d-block" alt="image de l'annonce {{ ad.title }} ">
 								<div class="carousel-caption d-none d-md-block">
 									<h5>
 										{{ad.title}}
@@ -101,6 +104,7 @@
 									</h5>
 								</div>
 								<div class="col">
+									{#{ stars(ad.avgRatings, 1, 5) }#}
 									{% include "partials/rating.html.twig" with {"rating":ad.avgRatings} %}
 									<br>
 									<small>
@@ -153,14 +157,13 @@
 								{{a.fullName}}
 							</h3>
 						</a>
-						<span class="badge badge-primary">
-							<a href="{{path('user_show', {'slug':a.slug})}}">
-								<span>
+						
+							<a class="btn btn-secondary" href="{{path('user_show', {'slug':a.slug})}}">
+								
 									{{a.ads | length }}
 									annonces
-								</span>
+								
 							</a>
-						</span>
 
 					</div>
 				</div>

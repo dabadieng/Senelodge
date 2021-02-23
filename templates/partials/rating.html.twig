@@ -7,3 +7,15 @@
 		{% endif %}
 	{% endfor %}
 </span>
+
+{% macro stars(rating, min = 1, max = 5) %}
+	<span class="rating">
+		{% for i in min..max %}
+			{% if i<= rating %}
+				<i class="fas fa-star"></i>
+			{% else %}
+				<i class="far fa-star"></i>
+			{% endif %}
+		{% endfor %}
+	</span>
+{% endmacro %}
