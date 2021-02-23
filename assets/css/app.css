@@ -38,7 +38,12 @@ div.container-fluid {
 
 .colorDivHome p {
     color: white;
-    font-size: medium;
+    font-size: 1.5em;
+}
+
+.colorDivHome h1 {
+    color: white;
+    font-size: 6em;
 }
 
 
@@ -173,7 +178,7 @@ div.carousel-caption {
 
 .carousel-item img {
     width: 700px;
-    height: 600px;
+    height: 6 00px;
 }
 
 
