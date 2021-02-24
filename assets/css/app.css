@@ -46,6 +46,11 @@ div.container-fluid {
     font-size: 4em;
 }
 
+.colorDivHome .btn {
+    color: rgb(5, 56, 5);
+    font-size: large;
+}
+
 
 /* couleur des titres des pages   ****************************************************/
 
@@ -262,9 +267,8 @@ input[type="textarea"] {
     height: 20em;
 }
 
-.badge.badge-primary a {
-    color: white;
-    font-weight: bold;
+textarea {
+    height: 11em;
 }
 
 
