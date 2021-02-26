@@ -93,7 +93,7 @@ class AdController extends AbstractController
                 "l'annonce <strong>{$ad->getTitle()}</strong> a bien été enregistré"
             );
 
-            //affectation de l'annonce à l'utilisateur connecté
+            //affectation de l'annonce au user connecté
             $ad->setAuthor($this->getUser());
 
             //On ne fait pas persister l'entity img car elle est reliée par la mention cascade dans l'entity ad 
