@@ -8,10 +8,25 @@
 
 {% block body %}
 
-{#{ modal(ad.title, ad.description) }#}
-	
-	<div class="ad" style="background-image : url({{asset(" /upload/image/"~ ad.coverImage)}})">
+	{#{ modal(ad.title, ad.description) }#}
+
+	<div class="ad hauteurDivShowAd" style="background-image : url({{asset("/upload/image/"~ ad.coverImage)}})">
 		<div class="container">
+			<a href="{{path('booking_create',{'slug':ad.slug})}}" class="btn btn-primary fixed-bottom">
+				Réserver
+			</a>
+			{% if app.user and app.user == ad.author %}
+				<a href="{{path('ads_edit', {'slug':ad.slug})}}" class="btn btn-secondary fixed-bottom">
+					Modifier l'annonce
+				</a>
+				<a href="{{path('ads_delete', {'slug':ad.slug})}}" class="btn btn-danger fixed-bottom" onclick="return confirm(`Etes vous sur de vouloir supprimer l'annonce :  {{ad.title}}`)">
+					Supprimer l'anonce
+				</a>
+			{% endif %}
+		</div>
+	</div>
+	<div class="container colorShowAd">
+		<div class="">
 			<h1>
 				{{ad.title}}
 			</h1>
@@ -30,21 +45,8 @@
 				</strong>
 				par Nuit
 			</h5>
-			<a href="{{path('booking_create',{'slug':ad.slug})}}" class="btn btn-primary">
-				Réserver
-			</a>
-			{% if app.user and app.user == ad.author %}
-				<a href="{{path('ads_edit', {'slug':ad.slug})}}" class="btn btn-secondary">
-					Modifier l'annonce
-				</a>
-				<a href="{{path('ads_delete', {'slug':ad.slug})}}" class="btn btn-danger" onclick="return confirm(`Etes vous sur de vouloir supprimer l'annonce :  {{ad.title}}`)">
-					Supprimer l'anonce
-				</a>
-			{% endif %}
 		</div>
-
 	</div>
-
 	<div class="container colorShowAd">
 		<div class="row">
 			<div class="col-md-8 mb-3 description">
@@ -103,7 +105,8 @@
 										Note globale donnée par nos voyageurs
 									</h5>
 								</div>
-								<div class="col">
+								<div
+									class="col">
 									{#{ stars(ad.avgRatings, 1, 5) }#}
 									{% include "partials/rating.html.twig" with {"rating":ad.avgRatings} %}
 									<br>
@@ -157,13 +160,13 @@
 								{{a.fullName}}
 							</h3>
 						</a>
-						
-							<a class="btn btn-secondary" href="{{path('user_show', {'slug':a.slug})}}">
-								
-									{{a.ads | length }}
-									annonces
-								
-							</a>
+
+						<a class="btn btn-secondary" href="{{path('user_show', {'slug':a.slug})}}">
+
+							{{a.ads | length }}
+							annonces
+
+						</a>
 
 					</div>
 				</div>

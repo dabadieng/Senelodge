@@ -158,6 +158,10 @@ div.ad {
     background-position: center center;
 }
 
+.hauteurDivShowAd {
+    height: 500px;
+}
+
 div.ad h1,
 div.ad h5,
 div.ad strong {
