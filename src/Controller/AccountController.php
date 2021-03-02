@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\Mailer;
+use App\Service\Mailler;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +22,16 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AccountController extends AbstractController
 {
+
+    /**
+     * @var Mailer
+     */
+    private $mailer;
+
+    public function __construct(Mailler $mailler)
+    {
+        $this->mailler = $mailler;
+    }
     /**
      *Permet de se connecter
      *  @Route("/login", name="account_login")
@@ -78,24 +91,48 @@ class AccountController extends AbstractController
                 $user->setPicture($fichier);
             }
 
-        $hash = $encoder->encodePassword($user, $user->getHash());
-        $user->setHash($hash);
+            $hash = $encoder->encodePassword($user, $user->getHash());
+            $user->setHash($hash);
 
-        $manager->persist($user);
-        $manager->flush();
+            //Demande de validation par mail 
+            $user->setToken($this->generateToken());
 
-        $this->addFlash(
-            'success',
-            'Votre compte à bien été créé ! Vous pouvez maintenant vous connecteee!'
-        );
+            $manager->persist($user);
+            $manager->flush();
 
-        //Sending email and login
-        return $this->redirectToRoute('email_registration_succes', ['ta' => $user->getEmail(), 'un' => $user->getFirstName()]);
-    }
+            $this->addFlash(
+                'success',
+                'Votre compte à bien été créé ! Veuillez le valider via le lien reçu par mail pour finaliser votre inscription et profiter de nos services!'
+            );
+
+            $this->mailler->sendEmail($user->getEmail(), $user->getToken());
+
+        }
 
         return $this->render('account/registration.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/confirmer-mon-compte/{token}", name="confirm_account")
+     * @param string $token
+     */
+    public function confirmAccount(string $token, UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneBy(["token" => $token]);
+        if ($user) {
+            $user->setToken(null);
+            $user->setEnabled(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash("success", "Compte actif !");
+            return $this->redirectToRoute("homepage");
+        } else {
+            $this->addFlash("error", "Ce compte n'exsite pas !");
+            return $this->redirectToRoute('homepage');
+        }
     }
 
     /**
@@ -191,5 +228,14 @@ class AccountController extends AbstractController
     public  function bookings()
     {
         return $this->render("account/bookings.html.twig");
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    private function generateToken()
+    {
+        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 }
