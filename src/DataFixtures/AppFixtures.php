@@ -29,6 +29,10 @@ class AppFixtures extends Fixture
         $adminRole->setTitle("ROLE_ADMIN");
         $manager->persist($adminRole);
 
+        $roleUser = new Role(); 
+        $roleUser->setTitle("ROLE_USER"); 
+        $manager->persist($roleUser); 
+
         $localisations = ["Dakar", "Diourbel", "Fatick", "Kaolack", "Kolda", "Louga", "Matam", "Saint-Louis", "Tambacounda", "Thiès", "Ziguinchor", "Kaffrine", "Kédougou", "Sédhiou"];
 
         $adminUser = new User();
