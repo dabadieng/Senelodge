@@ -17,10 +17,14 @@ class BookingController extends AbstractController
 {
     /**
      * @Route("/ads/{slug}/book", name="booking_create")
-     * @IsGranted("ROLE_USER")
+     * IsGranted("ROLE_USER")
      */
     public function book(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+        
         $booking = new Booking();
 
         $form = $this->createForm(BookingType::class, $booking);
@@ -61,6 +65,10 @@ class BookingController extends AbstractController
      */
     public function show(Booking $booking, Request $request, EntityManagerInterface $maneger)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+        
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
 

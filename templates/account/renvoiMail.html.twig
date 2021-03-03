@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Renvoi de confirmation de mail
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="alert alert-success" role="alert">
+			<h4 class="alert-heading">
+				Compte non confirmé !
+			</h4>
+			<p>
+				Pour profiter pleinement de nos services, vous devez au préalable confirmer votre compte. Un lien vous a été transmit par mail lors de votre inscription. Veuillez vérifier que ce dernier ne se trouve pas dans vos SPAMS
+			</p>
+			<hr>
+			<p class="mb-0">
+				Pour obtenir un nouveau mail veuillez cliquer sur le lien "Renvoyer à nouveau"
+			</p>
+		</div>
+		<p class="mb-0">
+			<a class="btn btn-primary" href="{{path("renvoi_mail_confirm")}}">
+				Renvoyer le lien
+			</a>
+		</p>
+	</div>
+{% endblock %}

@@ -1,18 +1,18 @@
-<p>
+<p class="h2">
 	Bonjour,
 </p>
 <br>
 
-<p>
+<p class="h2">
 	Nous vous remercions d'avoir choisi Sénélodge. Afin de profiter pleinement de nos services, veuillez valiser votre compte en cliquant sur le lien suivant
 </p>
 
 <br>
-<h3>
-	<a href="{{ url('confirm_account', {"token": token}) }}">
-		Cliquer ici pour confirmer votre compte
+<h4>
+	<a href="{{ absolute_url(path('confirm_account', {"token": token})) }}">
+		Activer mon compte
 	</a>
-</h3>
+</h4>
 
 <br>
 A bientôt sur Sénélodge

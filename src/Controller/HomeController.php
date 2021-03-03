@@ -17,6 +17,7 @@ class HomeController extends AbstractController
 
     public function home(AdRepository $adRepo, UserRepository $userRepo)
     {
+
         return $this->render(
             'home/index.html.twig',
             [

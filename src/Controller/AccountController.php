@@ -7,8 +7,10 @@ use App\Service\Mailer;
 use App\Service\Mailler;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
+use App\Entity\Role;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,10 +47,37 @@ class AccountController extends AbstractController
         //permet de ne pas retapper l'adresse mail en cas d'erreur
         $username = $utile->getLastUsername();
 
+
         return $this->render('account/login.html.twig', [
             'hasError' => $error !== null,
             'username' => $username,
         ]);
+    }
+
+    /**
+     * Renvoi de la demande de validation 
+     * @Route("/renvoi-mail-confirm", name="renvoi_mail_confirm")
+     *
+     * @return void
+     */
+    public function renvoiMail(EntityManagerInterface $manager)
+    {
+
+        $user = $this->getUser();
+
+
+        $user->setToken(md5(uniqid()));
+        $this->mailler->sendEmail($user->getEmail(), $user->getToken());
+
+        $manager->persist($user);
+        $manager->flush();
+
+        $this->addFlash(
+            "success",
+            "Un nouvel email de confirmation vous a été envoyé. Si vous ne le voyer pas regarder dans vos spams "
+        );
+
+        return $this->redirectToRoute("homepage");
     }
     /**
      * permet de se déconnecter
@@ -95,7 +124,7 @@ class AccountController extends AbstractController
             $user->setHash($hash);
 
             //Demande de validation par mail 
-            $user->setToken($this->generateToken());
+            $user->setToken(md5(uniqid()));
 
             $manager->persist($user);
             $manager->flush();
@@ -106,7 +135,7 @@ class AccountController extends AbstractController
             );
 
             $this->mailler->sendEmail($user->getEmail(), $user->getToken());
-
+            return $this->redirectToRoute("homepage");
         }
 
         return $this->render('account/registration.html.twig', [
@@ -118,12 +147,16 @@ class AccountController extends AbstractController
      * @Route("/confirmer-mon-compte/{token}", name="confirm_account")
      * @param string $token
      */
-    public function confirmAccount(string $token, UserRepository $userRepository)
+    public function confirmAccount(string $token, UserRepository $userRepository, RoleRepository $roleRepository)
     {
+        //On vérifie s'il y a un user qui a ce token 
         $user = $userRepository->findOneBy(["token" => $token]);
         if ($user) {
+            $role = $roleRepository->findOneBy(["title" => "ROLE_USER"]);
+
             $user->setToken(null);
             $user->setEnabled(true);
+            $user->addUserRole($role);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -138,12 +171,15 @@ class AccountController extends AbstractController
     /**
      * Permet d'afficher et de traiter le formulaire de profil
      * @Route("/account/profile", name="account_profile")
-     * @IsGranted("ROLE_USER")
      *
      * @return Response
      */
     public function profile(Request $request, EntityManagerInterface $manager)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+
         $user = $this->getUser();
         $form = $this->createForm(AccountType::class, $user);
         $form->handleRequest($request);
@@ -167,12 +203,16 @@ class AccountController extends AbstractController
     /**
      * Permet de modifier le mot de passe
      *@Route("/account/password-update", name="account_password")
-     *@IsGranted("ROLE_USER")
+     *IsGranted("ROLE_USER")
      *
      * @return Response
      */
     public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+
         $passwordUpdate = new PasswordUpdate();
 
         //renvoi l'utilisateur connecté
@@ -208,12 +248,16 @@ class AccountController extends AbstractController
     /**
      * Permet d'afficher le profil de l'utilisateur connecté 
      *@Route("/account", name="account_index")
-     *@IsGranted("ROLE_USER")
+     *IsGranted("ROLE_USER")
      * 
      * @return Response 
      */
     public function myAccount()
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+
         return $this->render("user/index.html.twig", [
             "user" => $this->getUser()
         ]);
@@ -227,6 +271,10 @@ class AccountController extends AbstractController
      */
     public  function bookings()
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+        
         return $this->render("account/bookings.html.twig");
     }
 

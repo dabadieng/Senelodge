@@ -55,12 +55,14 @@ class AdController extends AbstractController
      * permet de créer une annonce
      *@Route("/ad/new", name="ads_create")
      *Permet de gérer les droits 
-     *@IsGranted("ROLE_USER")
      *
      * @return Response
      */
     public function create(Request $request, EntityManagerInterface $manager)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
         $ad = new Ad();
 
         $form = $this->createForm(AdType::class, $ad);
@@ -113,13 +115,17 @@ class AdController extends AbstractController
     /**
      * Permet d'afficher le formulaie d'édition
      *@Route("/ads/{slug}/edit", name="ads_edit")
-     *@Security("is_granted('ROLE_USER') and user === ad.getAuthor()", 
+     *@Security("user === ad.getAuthor()", 
      *message="Cette annonce ne vous appartient pas. Vous ne pouvez pas l'éditer")
      *
      * @return Response 
      */
     public function edit(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
 
@@ -178,7 +184,7 @@ class AdController extends AbstractController
     /**
      * Permet de supprimer une annonce 
      * @Route("/ads/{slug}/delete", name="ads_delete")
-     * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous n'avez pas le droit à acceder à cette resources")
+     * @Security("user == ad.getAuthor()", message="Vous n'avez pas le droit à acceder à cette resources")
      *
      * @param Ad $ad
      * @param EntityManagerInterface $manager
@@ -186,6 +192,10 @@ class AdController extends AbstractController
      */
     public function delete(Ad $ad, EntityManagerInterface $manager)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render("account/renvoiMail.html.twig");
+        }
+
         $manager->remove($ad);
         $manager->flush();
 
@@ -201,6 +211,7 @@ class AdController extends AbstractController
 
     /**
      * @Route("/ads/supprime/image/{id}", name="ad_delete_image", methods={"DELETE"})
+     * @Security("user == ad.getAuthor()", message="Vous n'avez pas le droit à acceder à cette resources")
      */
     public function deleteImage(Image $image, Request $request)
     {
