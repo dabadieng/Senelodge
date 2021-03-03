@@ -192,6 +192,7 @@ class AdController extends AbstractController
      */
     public function delete(Ad $ad, EntityManagerInterface $manager)
     {
+        //Permet de vérifier si l'utilisateur à valider son compte 
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->render("account/renvoiMail.html.twig");
         }

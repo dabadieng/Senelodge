@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
             ->setLastName("DIENG")
             ->setFirstName("Daba")
             ->setIntroduction($faker->sentence())
-            ->setEmail("daba@symfony.com")
+            ->setEmail("dieng.daba@outlook.com")
             ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
             ->setHash($this->encoder->encodePassword($adminUser, "123456"))
             ->setPicture("dieng.jpg")
