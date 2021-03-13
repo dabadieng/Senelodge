@@ -54,8 +54,8 @@ class Ad
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(
-     *      min = 20,
-     *      minMessage = "Votre introduction doit contenir au minimun 20 caractères"
+     *      min = 10,
+     *      minMessage = "Votre introduction doit contenir au minimun 10 caractères"
      * )
      */
     private $introduction;
@@ -63,8 +63,8 @@ class Ad
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(
-     *      min = 50,
-     *      minMessage = "Votre description doit contenir au minimun 100 caractères"
+     *      min = 20,
+     *      minMessage = "Votre description doit contenir au minimun 20 caractères"
      * )
      */
     private $description;
@@ -77,7 +77,12 @@ class Ad
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true, cascade={"persist"})
-     * @Assert\Valid()
+     * @Assert\All({
+     *      @Assert\Image(
+     *              mimeTypes = {"image/jpeg", "image/gif", "image/png"},
+     *              mimeTypesMessage = "Le type d'extension de photo doit être JPEG/GIF/PNG     veuillez retirer celles qui ne respectent pas ce format"
+     *      )
+     * })
      */
     private $images;
 

@@ -1,7 +1,7 @@
 {% set url = path('ads_show', {'slug': ad.slug}) %}
 
 <div class="col-md-4">
-	<div class="card mb-3 box3D">
+	<div class="card mb-5 box3D">
 		<div class="card-header text-center">
 			{{ ad.rooms }}
 			chambres,
@@ -28,7 +28,7 @@
 		<div class="card-body hauteurDiv">
 			<h5 class="card-title">
 				<a href="{{ url }}">
-					{{ ad.title | slice(0, 22) }}
+					{{ ad.title | slice(0, 20) }}
 					...
 				</a>
 			</h5>
@@ -47,7 +47,7 @@
 						</a>
 					{% endif %}
 				</div>
-				<div class="col-8">
+				<div class="col-8 mb-3 pb-2 align-items-start">
 					<a href="{{ url }}" class="btn btn-success float-right">
 						En savoir plus !
 					</a>

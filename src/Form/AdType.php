@@ -8,8 +8,11 @@ use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -36,17 +39,47 @@ class AdType extends ApplicationType
                 TextType::class,
                 $this->getConfiguration('Titre', 'Entrer un super titre')
             )
-            /*->add(
-                'slug',
-                TextType::class,
-                $this->getConfiguration(
-                    'Adresse web',
-                    'Entrer votre adresse web (automatique)',
-                    [
-                        'required' => false,
-                    ]
-                )
-            )*/
+            ->add('coverImage', FileType::class, [
+                'label' => "Photo principale",
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => true,
+
+                // Add multiple
+                'multiple' => true,
+
+                'attr' => ['placeholder' => 'Sélectionner au maximum 1 photo principale '],
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+
+                'constraints' => [
+                    new Count([
+                        'max' => 1,
+                        'maxMessage' => 'Vous pouvez sélectionner maximum 1 photo'
+                    ]),
+                    new All([
+                        new File([
+                            'maxSize' => '5M',
+                            'mimeTypes' => [
+                                "image/png",
+                                "image/jpeg",
+                                "image/jpg",
+                                "image/gif",
+                                "image/x-citrix-jpeg",
+                                "image/x-citrix-png",
+                                "image/x-png",
+                            ],
+                            'maxSizeMessage' => 'La taille de certaines photos est trop grande',
+                            'mimeTypesMessage' => 'Certains fichiers ne respectent pas les types autorisés ',
+                        ])
+                    ])
+                ],
+            ])
             /*
             ->add(
                 'coverImage',
@@ -70,7 +103,7 @@ class AdType extends ApplicationType
                 TextareaType::class,
                 $this->getConfiguration("Description détaillée", "Tapez une description qui donne vraiment envie de venir chez vous !")
             )
-            ->add( 
+            ->add(
                 'rooms',
                 IntegerType::class,
                 $this->getConfiguration(
@@ -101,25 +134,33 @@ class AdType extends ApplicationType
                 // Add multiple
                 'multiple' => true,
 
+                'attr' => ['placeholder' => 'Sélectionner au maximum 5 photos '],
+
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
-                /*
+
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            "image/png",
-                            "image/jpeg",
-                            "image/jpg",
-                            "image/gif",
-                            "image/x-citrix-jpeg",
-                            "image/x-citrix-png",
-                            "image/x-png",
-                        ],
-                        'mimeTypesMessage' => "Ce type de fichier n'est pas autorisé",
+                    new Count([
+                        'max' => 5,
+                        'maxMessage' => 'Vous pouvez sélectionner maximum 5 photos'
+                    ]),
+                    new All([
+                        new Image([
+                            'maxSize' => '1028M',
+                            'mimeTypes' => [
+                                "image/png",
+                                "image/jpeg",
+                                "image/jpg",
+                                "image/gif",
+                                "image/x-citrix-jpeg",
+                                "image/x-citrix-png",
+                                "image/x-png",
+                            ],
+                            'maxSizeMessage' => 'La taille de certaines photos est trop grande',
+                            'mimeTypesMessage' => 'Certains fichiers ne respectent pas les types autorisés ',
+                        ])
                     ])
-                    
-                ],*/
+                ],
             ]);
     }
 

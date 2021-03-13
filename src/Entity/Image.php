@@ -21,6 +21,13 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\All({
+     *      @Assert\Image(
+     *              mimeTypes = {"image/jpeg", "image/gif", "image/png"},
+     *              mimeTypesMessage = "Le type d'extension de photo doit être JPEG/GIF/PNG     veuillez retirer celles qui ne respectent pas ce format"
+     *      )
+     * })
+     *  
      */
     private $url;
 

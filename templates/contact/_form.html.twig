@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    
+    <input type="hidden" name="raison">
+    <button class="btn">{{ button_label|default('Envoyer') }}</button>
+{{ form_end(form) }}
