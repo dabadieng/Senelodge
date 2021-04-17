@@ -6,12 +6,48 @@
 
 {% block body %}
 
-
-	<button id="checkout-button">
-		Checkout
-	</button>
-
-
+	<div class="container">
+		<h1>
+			Récapitulatif de votre commande
+		</h1>
+		<dl class="row">
+		
+			<dt class="col-md-4">
+				Date d'arrivée
+			</dt>
+			<dd class="col-md-8">
+				{{booking.startDate | date("d/m/y")}}
+			</dd>
+			<dt class="col-md-4">
+				Date de départ
+			</dt>
+			<dd class="col-md-8">
+				{{booking.endDate | date("d/m/y")}}
+			</dd>
+			<dt class="col-md-4">
+				Nombre de nuits
+			</dt>
+			<dd class="col-md-8">
+				{{booking.duration}}
+			</dd>
+			<dt class="col-md-4">
+				Montant total
+			</dt>
+			<dd class="col-md-8">
+				{{booking.amount | number_format(2, ',', ' ')}}
+				&euro;
+			</dd>
+			<dt class="col-md-4">
+				Commentaire
+			</dt>
+			<dd class="col-md-8">
+				{{booking.comment | default("Aucun commentaire")}}
+			</dd>
+		</dl>
+		<button id="checkout-button">
+			Checkout
+		</button>
+	</div>
 {% endblock %}
 {% block javascripts %}
  <script type="text/javascript">
