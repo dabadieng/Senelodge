@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Entity\SearchAd;
+use App\Form\AdEditType;
 use App\Form\SearchAdType;
 use App\Entity\Localisation;
 use App\Repository\AdRepository;
@@ -69,27 +70,8 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //On récupère les images transmises
-            $images = $form->get("images")->getData();
 
-            //On boucle sur les images 
-            foreach ($images as $image) {
-                //On génère un nouveau nom de fichier 
-                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-
-                //On copie le fichier dans le dossier upload 
-                $image->move(
-                    //Lieu de stockage défini dans service.yml 
-                    $this->getParameter("image_directory"),
-                    //nom du fichier à déplacer dans le dossier 
-                    $fichier
-                );
-
-                //On stocke l'image dans la db (son nom)
-                $img = new Image();
-                $img->setUrl($fichier);
-                $ad->addImage($img);
-            }
+            
             $this->addFlash(
                 'success',
                 "l'annonce <strong>{$ad->getTitle()}</strong> a bien été enregistré"

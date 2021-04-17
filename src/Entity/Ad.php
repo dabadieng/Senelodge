@@ -6,6 +6,8 @@ use App\Entity\User;
 use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\Common\Collections\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @Vich\Uploadable
  * @UniqueEntity(
  *      fields={"title"},
  *      message="Une autre annonce posséde déjà ce titre, merci de le modifier SVP "
@@ -77,13 +80,8 @@ class Ad
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true, cascade={"persist"})
-     * @Assert\All({
-     *      @Assert\Image(
-     *              mimeTypes = {"image/jpeg", "image/gif", "image/png"},
-     *              mimeTypesMessage = "Le type d'extension de photo doit être JPEG/GIF/PNG     veuillez retirer celles qui ne respectent pas ce format"
-     *      )
-     * })
      */
+    //https://www.youtube.com/watch?v=iB4gvCsjVXQ&t=136s 24min 
     private $images;
 
     /**
@@ -104,14 +102,26 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $coverImage;
+
+    /**
+     * @Vich\UploadableField(mapping="ad_images", fileNameProperty="coverImage")
+     * @var File
+     */
+    private $coverImageFile;
 
     /**
      * @ORM\ManyToOne(targetEntity=Localisation::class, inversedBy="ads")
      * @ORM\JoinColumn(nullable=false)
      */
     private $localisation;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
 
     public function __construct()
     {
@@ -133,14 +143,6 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->Slugify($this->title);
         }
-
-        //Initialise la coverImage avec la 1ere image de l'entity image
-        
-        if(empty($this->coverImage)) {
-            $this->coverImage = "01.png"; 
-        }
-        
-        
     }
 
     public function getId(): ?int
@@ -342,7 +344,7 @@ class Ad
             }
         }
 
-        return $this; 
+        return $this;
     }
 
     /**
@@ -390,26 +392,35 @@ class Ad
         return null;
     }
 
-    public function getCoverImage(): ?string
+    public function getCoverImage()
     {
 
-        if (count($this->images) > 0) {
-            $cov = array_reduce($this->images->toArray(), function ($c, $image) {
-                if ($c == 0) {
-                    $this->coverImage = $image->getUrl();
-                    return $this->coverImage;
-                }
-            }, 0); //en mettant 0 cela initialise par défaut le total à 0
-
-        }
         return $this->coverImage;
     }
 
-    public function setCoverImage(?string $coverImage): self
+    public function setCoverImage($coverImage)
     {
         $this->coverImage = $coverImage;
 
         return $this;
+    }
+
+    public function setCoverImageFile(File $image = null)
+    {
+        $this->coverImageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updated_at = new \DateTime('now');
+        }
+    }
+
+    public function getCoverImageFile()
+    {
+        return $this->coverImageFile;
     }
 
     public function getLocalisation(): ?Localisation
@@ -420,6 +431,18 @@ class Ad
     public function setLocalisation(?Localisation $localisation): self
     {
         $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

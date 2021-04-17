@@ -7,6 +7,7 @@ use App\Entity\Localisation;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use phpDocumentor\Reflection\Types\Integer;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,46 +40,28 @@ class AdType extends ApplicationType
                 TextType::class,
                 $this->getConfiguration('Titre', 'Entrer un super titre')
             )
-            ->add('coverImage', FileType::class, [
-                'label' => "Photo principale",
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
+            ->add('coverImageFile',  VichFileType::class, [
+                'label' => 'Sélectionner votre photo principale ',
+                'allow_delete' => true,
+                'delete_label' => 'Supprimer votre photo principale',
                 'required' => true,
-
-                // Add multiple
-                'multiple' => true,
-
-                'attr' => ['placeholder' => 'Sélectionner au maximum 1 photo principale '],
 
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
-
-                'constraints' => [
-                    new Count([
-                        'max' => 1,
-                        'maxMessage' => 'Vous pouvez sélectionner maximum 1 photo'
-                    ]),
-                    new All([
-                        new File([
-                            'maxSize' => '5M',
+                /*'constraints' => [
+                        new Files([
+                            'maxSize' => '4096k',
                             'mimeTypes' => [
-                                "image/png",
-                                "image/jpeg",
-                                "image/jpg",
-                                "image/gif",
-                                "image/x-citrix-jpeg",
-                                "image/x-citrix-png",
-                                "image/x-png",
+                                'text/txt',
+                                'text/html',
+                                'application/pdf',
+                                'application/x-pdf',
+                                'application/doc',
+                                'application/docx',
                             ],
-                            'maxSizeMessage' => 'La taille de certaines photos est trop grande',
-                            'mimeTypesMessage' => 'Certains fichiers ne respectent pas les types autorisés ',
+                            'mimeTypesMessage' => 'Please upload a valid txt/html/doc/docx/pdf document',
                         ])
-                    ])
-                ],
+                    ],*/
             ])
             /*
             ->add(

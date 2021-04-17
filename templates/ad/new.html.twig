@@ -36,5 +36,14 @@
 {% block javascripts %}
 
 	<script src="{{ asset('build/js/ad.js') }}"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>
+	$('#uploadForm + embed').remove();
+	$('#uploadForm').after('<embed src="'+e.target.result+'" width="450" height="300">');
+	
+	$("#coverImageFile").change(function () {
+    filePreview(this);
+	});
+	</script>
 
 {% endblock %}

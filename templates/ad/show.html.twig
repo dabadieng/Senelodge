@@ -13,7 +13,7 @@
 	<div class="container colorShowAd">
 		<div class="ad hauteurDivShowAd">
 			<div class="mb-5">
-				<img src="{{asset("/upload/image/"~ ad.coverImage)}}" alt="Image de {{ad.title}}" class="img-fluid">
+				<img src="{{ vich_uploader_asset(ad, 'coverImageFile') }}" alt="Image de {{ad.title}}" class="img-fluid">
 
 			</div>
 			<div class="container">
