@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+
 class BookingController extends AbstractController
 {
     /**
@@ -24,7 +26,7 @@ class BookingController extends AbstractController
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->render("account/renvoiMail.html.twig");
         }
-        
+
         $booking = new Booking();
 
         $form = $this->createForm(BookingType::class, $booking);
@@ -56,6 +58,7 @@ class BookingController extends AbstractController
         ]);
     }
 
+
     /**
      * Permet de visualiser une réservation 
      * @Route("/booking/{id}", name="booking_show")
@@ -68,7 +71,7 @@ class BookingController extends AbstractController
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->render("account/renvoiMail.html.twig");
         }
-        
+
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
 
