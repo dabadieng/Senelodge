@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use Stripe\Stripe;
 use App\Entity\Booking;
+use App\Repository\AdRepository;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ class PaymentController extends AbstractController
     public function paymentBook(Request $request)
     {
         $session = $request->getSession();
-        $booking = $session->get("booking");
+        $booking = $session->get("order");
 
         \Stripe\Stripe::setApiKey('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');
 
@@ -45,7 +46,7 @@ class PaymentController extends AbstractController
                     'product_data' => [
                         'name' => 'Réservation pour l\'annonce : ' . $booking->getAd()->getTitle(),
                     ],
-                    'unit_amount' => $booking->getAmount(),
+                    'unit_amount' => $booking->getAmount() * 100,
                 ],
                 'quantity' => 1,
             ]],
@@ -59,25 +60,35 @@ class PaymentController extends AbstractController
     }
 
     /**
-     *@Route("/ask/payment/{id}", name="ask_payment")
+     *@Route("/ask/payment", name="ask_payment")
      * @return void
      */
-    public function paid(Booking $booking)
+    public function askPayment(Request $request, EntityManagerInterface $manager)
     {
-
+        $session = $request->getSession();
+        $order = $session->get("order");
 
         return $this->render("payment/ask.html.twig", [
-            "booking" => $booking
+            "order" => $order
         ]);
     }
 
     /**
      *@Route("/success", name="success")
      */
-    public function success(Request $request, EntityManagerInterface $manager)
+    public function success(Request $request, EntityManagerInterface $manager, AdRepository $adRepository)
     {
         $session = $request->getSession();
-        $booking = $session->get("booking");
+        $order = $session->get("order");
+        $ad = $adRepository->find($order->getAd()->getId());
+
+        $booking = new Booking();
+        $booking->setAd($ad)
+            ->setAmount($order->getAmount())
+            ->setBooker($this->getUser())
+            ->setComment($order->getComment())
+            ->setStartDate($order->getStartDate())
+            ->setEndDate($order->getEndDate());
 
         $manager->persist($booking);
         $manager->flush();

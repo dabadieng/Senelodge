@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Entity\Booking;
 use App\Entity\Comment;
+use App\Entity\OrderBooking;
 use App\Form\BookingType;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,7 @@ class BookingController extends AbstractController
      * @Route("/ads/{slug}/book", name="booking_create")
      * IsGranted("ROLE_USER")
      */
-    public function book(Ad $ad, Request $request, EntityManagerInterface $manager)
+    public function book(Ad $ad, Request $request, EntityManagerInterface $manager, EntityManagerInterface $managerWait)
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->render("account/renvoiMail.html.twig");
@@ -44,18 +45,26 @@ class BookingController extends AbstractController
                     "Les dates que vous avez choisi ne peuvent être réservées : elles sont déjà prises."
                 );
             } else {
-                // Sinon enregistrement et redirection
+                //Persist l'entity pour obtenir les methodes de callback 
                 $manager->persist($booking);
+
+                // Sinon enregistrement et redirection vers le paiement 
+                $orderBooking = new OrderBooking();
+                $orderBooking->setAd($booking->getAd())
+                    ->setAmount($booking->getAmount())
+                    ->setBooker($booking->getBooker())
+                    ->setComment($booking->getComment())
+                    ->setStartDate($booking->getStartDate())
+                    ->setEndDate($booking->getEndDate());
+
+                $manager->persist($orderBooking);
+                $manager->remove($booking); 
                 $manager->flush();
 
-                //return $this->redirectToRoute('booking_show', ['id' => $booking->getId(), 'withAlert' => true]);
-
                 $session = $request->getSession();
-                $session->set("booking", $booking);
+                $session->set("order", $orderBooking);
 
-                return $this->redirectToRoute('ask_payment', [
-                    'id' => $booking->getId(),
-                ]);
+                return $this->redirectToRoute('ask_payment');
             }
         }
 
