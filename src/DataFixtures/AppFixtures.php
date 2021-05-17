@@ -10,6 +10,7 @@ use App\Entity\Image;
 use App\Entity\Booking;
 use App\Entity\Comment;
 use App\Entity\Localisation;
+use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -29,9 +30,9 @@ class AppFixtures extends Fixture
         $adminRole->setTitle("ROLE_ADMIN");
         $manager->persist($adminRole);
 
-        $roleUser = new Role(); 
-        $roleUser->setTitle("ROLE_USER"); 
-        $manager->persist($roleUser); 
+        $roleUser = new Role();
+        $roleUser->setTitle("ROLE_USER");
+        $manager->persist($roleUser);
 
         $localisations = ["Dakar", "Diourbel", "Fatick", "Kaolack", "Kolda", "Louga", "Matam", "Saint-Louis", "Tambacounda", "Thiès", "Ziguinchor", "Kaffrine", "Kédougou", "Sédhiou"];
 
@@ -114,7 +115,10 @@ class AppFixtures extends Fixture
                     ->setPrice(mt_rand(80, 200))
                     ->setRooms(mt_rand(1, 6))
                     ->setAuthor($user)
-                    ->setLocalisation($localisation);
+                    ->setLocalisation($localisation)
+                    ->setPath("/path")
+                    ->setExtension(".png")
+                    ->setDocumentSize(10);
 
                 //Gestion des images attachées aux annonces
                 for ($j = 1; $j <= mt_rand(2, 5); $j++) {

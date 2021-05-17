@@ -7,8 +7,10 @@ use App\Entity\Localisation;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use phpDocumentor\Reflection\Types\Integer;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
@@ -39,57 +41,18 @@ class AdType extends ApplicationType
                 TextType::class,
                 $this->getConfiguration('Titre', 'Entrer un super titre')
             )
-            ->add('coverImage', FileType::class, [
-                'label' => "Photo principale",
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => true,
-
-                // Add multiple
-                'multiple' => true,
-
-                'attr' => ['placeholder' => 'Sélectionner au maximum 1 photo principale '],
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
-
-                'constraints' => [
-                    new Count([
-                        'max' => 1,
-                        'maxMessage' => 'Vous pouvez sélectionner maximum 1 photo'
-                    ]),
-                    new All([
-                        new File([
-                            'maxSize' => '5M',
-                            'mimeTypes' => [
-                                "image/png",
-                                "image/jpeg",
-                                "image/jpg",
-                                "image/gif",
-                                "image/x-citrix-jpeg",
-                                "image/x-citrix-png",
-                                "image/x-png",
-                            ],
-                            'maxSizeMessage' => 'La taille de certaines photos est trop grande',
-                            'mimeTypesMessage' => 'Certains fichiers ne respectent pas les types autorisés ',
-                        ])
-                    ])
-                ],
-            ])
-            /*
             ->add(
-                'coverImage',
-                UrlType::class,
-                $this->getConfiguration(
-                    'Entrer une URL',
-                    "Adresse URL de l'image "
-                )
+                'documentFile',
+                VichImageType::class,
+                [
+                    'required' => true,
+                    'allow_delete' => true,
+                    'download_label' => 'Photo principale',
+                    'download_uri' => true,
+                    'image_uri' => true,
+                ]
             )
-            */
+
             ->add(
                 'introduction',
                 TextType::class,

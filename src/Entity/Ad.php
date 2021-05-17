@@ -13,8 +13,13 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
+ * @Vich\Uploadable
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity(
  *      fields={"title"},
@@ -108,10 +113,48 @@ class Ad
     private $coverImage;
 
     /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     *
+     * @Vich\UploadableField(mapping="ad", fileNameProperty="coverImage", size="documentSize", mimeType="extension", originalName="path")
+     * @var File|null
+     * @Assert\File(
+     *     maxSize = "4096k",
+     *     mimeTypes = {"application/pdf", 
+     *                  "image/jpeg", "image/png",
+     *                   },
+     *     mimeTypesMessage = "Please upload a valid document file(pdf) ou image file(img/jpg/bmp)")
+     */
+    private $documentFile;
+
+    /** 
+     * @ORM\Column(type="string", length=255)
+     */
+    private $path;
+
+    /**
+     * NOTE:mimetype
+     * @ORM\Column(type="string", length=255)
+     */
+    private $extension;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * //@var int|null
+     */
+    private $documentSize;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity=Localisation::class, inversedBy="ads")
      * @ORM\JoinColumn(nullable=false)
      */
     private $localisation;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -134,13 +177,6 @@ class Ad
             $this->slug = $slugify->Slugify($this->title);
         }
 
-        //Initialise la coverImage avec la 1ere image de l'entity image
-        
-        if(empty($this->coverImage)) {
-            $this->coverImage = "01.png"; 
-        }
-        
-        
     }
 
     public function getId(): ?int
@@ -342,7 +378,7 @@ class Ad
             }
         }
 
-        return $this; 
+        return $this;
     }
 
     /**
@@ -392,7 +428,7 @@ class Ad
 
     public function getCoverImage(): ?string
     {
-
+/*
         if (count($this->images) > 0) {
             $cov = array_reduce($this->images->toArray(), function ($c, $image) {
                 if ($c == 0) {
@@ -402,6 +438,7 @@ class Ad
             }, 0); //en mettant 0 cela initialise par défaut le total à 0
 
         }
+*/
         return $this->coverImage;
     }
 
@@ -420,6 +457,91 @@ class Ad
     public function setLocalisation(?Localisation $localisation): self
     {
         $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setDocumentFile(?File $documentFile = null): void
+    {
+        $this->documentFile = $documentFile;
+
+        if (null !== $documentFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+    public function getDocumentFile(): ?File
+    {
+        return $this->documentFile;
+    }
+
+    public function setDocumentSize(?int $documentSize): void
+    {
+        $this->documentSize = $documentSize;
+    }
+
+    public function getDocumentSize(): ?int
+    {
+        return $this->documentSize;
+    }
+
+    /**
+     * Get nOTE:mimetype
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * Set nOTE:mimetype
+     *
+     * returnself
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of path
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set the value of path
+     *
+     * returnself
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
 
         return $this;
     }
